@@ -12,6 +12,8 @@
 
 ## Changes
 
+- Access Control now groups subnet gateways by prefix, shows Headscale's reported primary and links to route approvals. Explicit empty access rules are preserved when editing the policy.
+
 - Community automation is consolidated into five workflows. Docker releases use short `vX.Y.Z` tags and publish only the final amd64/arm64 image. Release titles show only the tag; source uses GitHub’s built-in archives, while bilingual docs, image digests and checksums remain attached.
 
 - Community releases now use `vX.Y.Z-zh`, without a revision suffix, matching the upstream version. Each version retains its original images, source and bilingual documentation; later corrections ship with the next upstream release.

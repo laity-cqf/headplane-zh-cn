@@ -5,9 +5,10 @@ import {
   requestApiContext,
 } from "~/server/context";
 import { isDataWithApiError } from "~/server/headscale/api/error-client";
-import { nodesResource, usersResource } from "~/server/headscale/live-store";
+import { usersResource } from "~/server/headscale/live-store";
 import { Capabilities } from "~/server/web/roles";
 import log from "~/utils/log";
+import { groupSubnetRoutes, type SubnetRouteGroup } from "~/utils/subnet-routes";
 
 import type { Route } from "./+types/overview";
 
@@ -31,6 +32,9 @@ export async function aclLoader({ request, context }: Route.LoaderArgs) {
     writable: false,
     canEditGrants: context.get(headscaleContext).capabilities.policySupportsGrants,
     policy: "",
+    canReadRoutes: auth.can(principal, Capabilities.read_machines),
+    routesLoaded: false,
+    subnetRoutes: [] as SubnetRouteGroup[],
     // Context for the visual editor; both are optional.
     users: [] as string[],
     tagUsage: [] as { tag: string; nodes: string[] }[],
@@ -39,16 +43,23 @@ export async function aclLoader({ request, context }: Route.LoaderArgs) {
   // Try to load the ACL policy from the API.
   const { api } = await getRequestApi(request);
 
-  try {
-    const [nodesSnap, usersSnap] = await Promise.all([
-      headscaleLiveStore.get(nodesResource, api),
-      headscaleLiveStore.get(usersResource, api),
-    ]);
+  const [nodesResult, usersResult] = await Promise.allSettled([
+    flags.canReadRoutes ? api.nodes.list() : Promise.resolve([]),
+    headscaleLiveStore.get(usersResource, api),
+  ]);
 
-    flags.users = usersSnap.data.map((user) => user.name).sort();
+  if (usersResult.status === "fulfilled") {
+    flags.users = usersResult.value.data.map((user) => user.name).sort();
+  } else {
+    log.warn("api", "Failed to load ACL users: %s", String(usersResult.reason));
+  }
+  if (nodesResult.status === "fulfilled" && flags.canReadRoutes) {
+    const nodes = nodesResult.value;
+    flags.subnetRoutes = groupSubnetRoutes(nodes);
+    flags.routesLoaded = true;
 
     const usage = new Map<string, string[]>();
-    for (const node of nodesSnap.data) {
+    for (const node of nodes) {
       for (const tag of node.tags) {
         usage.set(tag, [...(usage.get(tag) ?? []), node.givenName || node.name]);
       }
@@ -56,8 +67,8 @@ export async function aclLoader({ request, context }: Route.LoaderArgs) {
     flags.tagUsage = Array.from(usage.entries())
       .map(([tag, nodes]) => ({ tag, nodes }))
       .sort((a, b) => a.tag.localeCompare(b.tag));
-  } catch (error) {
-    log.warn("api", "Failed to load ACL editor context: %s", String(error));
+  } else if (nodesResult.status === "rejected") {
+    log.warn("api", "Failed to load subnet routes: %s", String(nodesResult.reason));
   }
 
   try {

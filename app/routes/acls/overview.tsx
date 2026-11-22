@@ -1,4 +1,13 @@
-import { Construction, Eye, FileX, FlaskConical, Pencil, Shield, TagsIcon } from "lucide-react";
+import {
+  Construction,
+  Eye,
+  FileX,
+  FlaskConical,
+  Pencil,
+  Route as RouteIcon,
+  Shield,
+  TagsIcon,
+} from "lucide-react";
 import type { ReactNode } from "react";
 import { Suspense, lazy, useMemo, useState } from "react";
 import { isRouteErrorResponse, useFetcher } from "react-router";
@@ -27,6 +36,7 @@ import { aclAction } from "./acl-action";
 import { aclLoader } from "./acl-loader";
 import Fallback from "./components/fallback";
 import RulesEditor from "./components/rules-editor";
+import SubnetRoutes from "./components/subnet-routes";
 import TagsGroupsEditor from "./components/tags-groups-editor";
 
 const LazyEditor = lazy(() =>
@@ -41,7 +51,17 @@ export const action = aclAction;
 export const clientAction = toastClientAction;
 
 export default function Page({
-  loaderData: { access, writable, canEditGrants, policy, users, tagUsage },
+  loaderData: {
+    access,
+    writable,
+    canEditGrants,
+    canReadRoutes,
+    subnetRoutes,
+    routesLoaded,
+    policy,
+    users,
+    tagUsage,
+  },
 }: Route.ComponentProps) {
   const { locale, t } = useI18n();
   const [codePolicy, setCodePolicy] = useState(policy);
@@ -151,6 +171,14 @@ export default function Page({
               <span>{t("acls.rules")}</span>
             </div>
           </TabsTab>
+          {canReadRoutes ? (
+            <TabsTab value="routes">
+              <div className="flex items-center gap-2">
+                <RouteIcon className="p-1" />
+                <span>{t("acls.subnetRoutes")}</span>
+              </div>
+            </TabsTab>
+          ) : null}
           <TabsTab value="tags">
             <div className="flex items-center gap-2">
               <TagsIcon className="p-1" />
@@ -188,6 +216,11 @@ export default function Page({
             />
           ))}
         </TabsPanel>
+        {canReadRoutes ? (
+          <TabsPanel value="routes">
+            <SubnetRoutes loaded={routesLoaded} routes={subnetRoutes} />
+          </TabsPanel>
+        ) : null}
         <TabsPanel value="tags">
           {structuredPanel((value) => (
             <TagsGroupsEditor

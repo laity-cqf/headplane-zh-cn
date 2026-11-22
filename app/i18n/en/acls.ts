@@ -206,4 +206,23 @@ export default {
   "acls.parse.unicode": "Invalid unicode",
   "acls.parse.escape": "Invalid escape character",
   "acls.parse.character": "Invalid character",
+  "acls.haDescription":
+    "Advertise and approve the same prefix on at least two gateways that can reach the same LAN. Headscale selects the primary and manages failover; via is optional. Candidate counts describe configuration, and online status does not prove LAN reachability. The primary marker is Headscale's reported selection; via may restrict routing for individual clients.",
+  "acls.haTitle": "Automatic failover",
+  "acls.manageRouter": "Manage gateway",
+  "acls.noSubnetRoutes": "No subnet routes are advertised or approved.",
+  "acls.primaryRouter": "Current primary",
+  "acls.refreshRoutes": "Refresh routes",
+  "acls.routeAdvertised": "Advertised",
+  "acls.routeApproved": "Approved",
+  "acls.routeCandidates": "{count} configured candidates",
+  "acls.routeNotAdvertised": "Not advertised",
+  "acls.routePending": "Not approved",
+  "acls.routerOffline": "Offline",
+  "acls.routerOnline": "Online",
+  "acls.routesRetry": "Refresh to retry loading gateways from Headscale.",
+  "acls.routesUnavailable": "Subnet routes unavailable",
+  "acls.subnetRoutes": "Subnet routes",
+  "acls.subnetRoutesDescription":
+    "Gateways grouped by advertised or approved subnet. Manage approvals from each machine's details.",
 } as const;

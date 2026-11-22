@@ -251,9 +251,14 @@ export function serializePolicy(policy: Policy): string {
   if (Object.keys(policy.groups).length > 0) sections.groups = policy.groups;
   if (Object.keys(policy.tagOwners).length > 0) sections.tagOwners = policy.tagOwners;
   if (Object.keys(policy.hosts).length > 0) sections.hosts = policy.hosts;
-  if (policy.acls.length > 0) sections.acls = policy.acls.map(compactAclRule);
+  // Headscale treats absent access rules differently from explicit empty arrays.
+  if (policy.acls.length > 0 || policy.keyOrder.includes("acls")) {
+    sections.acls = policy.acls.map(compactAclRule);
+  }
   if (policy.ssh.length > 0) sections.ssh = policy.ssh.map(compactSshRule);
-  if (policy.grants.length > 0) sections.grants = policy.grants.map(compactGrant);
+  if (policy.grants.length > 0 || policy.keyOrder.includes("grants")) {
+    sections.grants = policy.grants.map(compactGrant);
+  }
   const autoApprovers = compactAutoApprovers(policy.autoApprovers);
   if (Object.keys(autoApprovers).length > 0) sections.autoApprovers = autoApprovers;
   for (const [key, value] of Object.entries(policy.extra)) {
