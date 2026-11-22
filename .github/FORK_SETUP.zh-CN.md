@@ -2,6 +2,8 @@
 
 `laity-cqf/headplane-zh-cn` 是 [tale/headplane](https://github.com/tale/headplane) 的社区中英双语 fork，**不是 Headplane、Headscale 或 Tailscale 官方中文版**。保留上游 `LICENSE` 原文、作者版权及来源说明。
 
+完整开发、升级和新会话衔接步骤见[维护与会话交接手册](../MAINTENANCE.zh-CN.md)（[English](../MAINTENANCE.md)）。本文保留发行、权限和工作流操作细节；实际状态以 GitHub 和当前分支元数据为准。
+
 ## 账号更名后的地址
 
 GitHub 账号已由 `CM-Chenqf` 更名为 `laity-cqf`。仓库使用 `https://github.com/laity-cqf/headplane-zh-cn`，镜像使用 `ghcr.io/laity-cqf/headplane-zh-cn`；已有部署需修改镜像命名空间，版本标签和摘要保持不变。已确认 `v0.8.2` 在新地址与原正式镜像摘要一致，支持 amd64/arm64，无需重建。
@@ -10,7 +12,7 @@ GitHub 账号已由 `CM-Chenqf` 更名为 `laity-cqf`。仓库使用 `https://gi
 
 ## 当前状态与分支
 
-- 双语正式版 [v0.8.2-zh](https://github.com/laity-cqf/headplane-zh-cn/releases/tag/v0.8.2-zh) 已发布并锁定。正式镜像使用 `ghcr.io/laity-cqf/headplane-zh-cn:v0.8.2`，支持 amd64/arm64。
+- 截至 2026-11-22，最新双语社区维护版 [v0.8.4-zh](https://github.com/laity-cqf/headplane-zh-cn/releases/tag/v0.8.4-zh) 已发布并锁定，真实上游基础为 Headplane 0.8.2。正式镜像使用 `ghcr.io/laity-cqf/headplane-zh-cn:v0.8.4`，支持 amd64/arm64；历史发行与附件保持原样。
 - 应用、服务端可见错误及完整文档支持 English / 简体中文；远端终端输出、原始诊断和配置字段保留原文。翻译检查及真实 Headscale 容器验收已通过。
 - 只保留两条长期维护分支：`main` 跟随上游开发，`stable` 跟随最新已发布正式标签。新版本继续更新 `stable`，不新建长期版本分支。
 - 各分支沿用对应上游功能、依赖、工具链和 Headscale 兼容矩阵。0.8 使用 VitePress、原有账号关联及访问控制编辑器；开发线使用 Fumadocs，不将新功能强行移植到旧版。
@@ -35,7 +37,7 @@ Upstream sync 每日北京时间约 09:27 检查上游。发现新提交或正�
 
 在 GitHub Watch 中订阅仓库或跟踪 Issue，按个人通知设置接收更新。仓库需启用 Issues、Actions 和 Actions 创建 PR 的权限。
 
-默认使用 `GITHUB_TOKEN`。若同步包含工作流文件且 GitHub 拒绝默认令牌推送，配置限于本仓库的 `UPSTREAM_SYNC_TOKEN` Secret，授予 Contents、Pull requests、Issues、Workflows 所需写入权限。自定义令牌也用于 Nix 哈希自动提交，以便触发后续 CI；仅有默认令牌时，机器人提交不会自动触发新的工作流，发布前手动运行并核对精确提交验收。不要删除工作流同步来绕过权限错误。
+默认使用 `GITHUB_TOKEN`。若同步包含工作流文件且 GitHub 拒绝默认令牌推送，配置限于本仓库的 `UPSTREAM_SYNC_TOKEN` Secret，授予 Contents、Pull requests、Issues、Workflows 所需写入权限。自定义令牌也用于 Nix 哈希自动提交，以便触发后续 CI；仅有默认令牌时，机器人提交不会自动触发新的工作流。现有发行 preflight 只认可最终 stable SHA 的 `event=push` 检查，单独手动运行工作流不足以满足条件；使用能触发 CI 的维护者凭据推送必要后续变更，并核对最终提交的 push 验收，不绕过门禁。不要删除工作流同步来绕过权限错误。
 
 将上游历史合并进维护分支，逐项检查英文和中文差异。保留手工冲突处理，不用上游提交强制覆盖汉化。同步提醒本身不代表翻译已完成。
 

@@ -8,6 +8,8 @@
 
 ## Changes
 
+- A bilingual maintenance and session handoff manual now records the released source, branch differences, upgrade and translation steps, build acceptance, publication gates and recovery procedures.
+
 - Manage Headscale 0.29 node capabilities, randomized ports, application grants, network/SSH tests, authentication decisions and server lifecycle/HA/client defaults from bilingual web forms. Validate drafts on Headscale without saving; SSH environment forwarding is offered from 0.29.7. Community maintenance release 0.8.4 packages these additions on the same upstream 0.8.2 base; the existing v0.8.3 image is unchanged.
 
 - Community maintenance version 0.8.3 packages the JSON/HuJSON ACL and Grants editors and subnet gateway list, based on upstream 0.8.2. The source and release manifest retain the actual upstream version; full image tags remain immutable.

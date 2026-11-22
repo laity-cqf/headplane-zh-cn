@@ -931,9 +931,9 @@
     "validation.required": "b609356db4df000b822a439d80f94f9ffa7f63c5cdbd6de2686ec834315ab793"
   },
   "documents": {
-    "CHANGELOG.md": "e2cd28847bc641c3aa6724b5a4a58e3f97d08403463c6e60998331a14279313b",
+    "CHANGELOG.md": "68230fc46da558bfc1d234f3f11ca0ba6f48ea39e171e53c9bb0e8fedd491098",
     "deploy/README.md": "84e01bf48ed7a2a1fa1b19c3bd7f03fed871a06629b3741085cac0abdb1c1e79",
-    "docs/CHANGELOG.md": "3df270dde9bc7a260802b446386e0710c39ee51e687c7c272a4e6a87470b2c8a",
+    "docs/CHANGELOG.md": "1366ced9e42b2c16cf8bc2bf5668b9b32362caff123cced0a47b64b74cff2ea0",
     "docs/configuration/common-issues.md": "6ae48554aa4f0c0755102963b0c9a1d9e8ae04d482c38cf9253c091c40ce22eb",
     "docs/configuration/index.md": "7ec6417f0318cba9b2435b822769bd1dbf56d031d91a144fdc0092ffb1d91bf4",
     "docs/configuration/tls.md": "d27dd9ffb6dad652f26a9d970ac1cc1bc1c94da1c2f5d95996f46989969878a9",
@@ -959,7 +959,7 @@
     "docs/Nix.md": "4f4b039f48f6ab89d9f4d3373fa2cffd3053d1e99559355c5b562d16b1a94087",
     "docs/NixOS-options.md": "c187a8ec1da30a2be6ae843c1e443d48d226b8d748cb7dab5a7f9d6301bdf101",
     "docs/SECURITY.md": "03fc3ce13b719b49587c0c2d3c53ad23b9b775ae8e5873cc4697eea36624cb9d",
-    "README.md": "e49a0365814d270032dc9599b9d33ccdc695181f21dced9b14afd06b6d8d9de4"
+    "README.md": "cfa9379982fb42cfe77f6554c880231efd3481229082afd68c090dc055109ead"
   },
   "shared": {
     ".github/i18n/scope.json": "da583c200a6dd54ec67cd5fea2ba038329b59e40cb7036da2c16712eb446ef0d",

@@ -1,5 +1,7 @@
 # Headplane zh-CN（非官方 fork）
 
+[完整维护与会话交接手册](./MAINTENANCE.zh-CN.md) · [English maintenance manual](./MAINTENANCE.md)
+
 [English](./README.md) · 简体中文
 
 本仓库为社区维护的 [tale/headplane](https://github.com/tale/headplane) 中英双语 fork，**不是 Headplane、Headscale 或 Tailscale 的官方中文版**。保留上游 [MIT 许可证原文](./LICENSE)及原作者版权声明。

@@ -1,5 +1,7 @@
 # Headplane zh-CN (unofficial fork)
 
+[Maintenance and session handoff](./MAINTENANCE.md) · [中文维护与会话交接](./MAINTENANCE.zh-CN.md)
+
 This is `laity-cqf/headplane-zh-cn`, a community-maintained English and
 Simplified Chinese fork of [tale/headplane](https://github.com/tale/headplane).
 It is not an official Chinese release of Headplane, Headscale, or Tailscale.

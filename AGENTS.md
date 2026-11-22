@@ -1,5 +1,10 @@
 # Core Concepts
 
+For a new community maintenance session, read `MAINTENANCE.zh-CN.md` (or
+`MAINTENANCE.md`) and `.github/FORK_SETUP.zh-CN.md` before changing code or
+publishing. Recheck live repository and release state, preserve existing user
+changes, and update both handoff manuals when maintenance decisions change.
+
 Headplane is a web application to manage Headscale, a self-hosted implementation
 of the Tailscale control server. There are a few tenets that guide the entire
 development of the project:
