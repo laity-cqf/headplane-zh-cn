@@ -2,9 +2,9 @@
 
 [English](./README.md)
 
-本项目是 [tale/headplane](https://github.com/tale/headplane) 的非官方中英双语 fork，保留上游许可证和来源说明。拉取前确认 [v0.8.3-zh](https://github.com/laity-cqf/headplane-zh-cn/releases/tag/v0.8.3-zh) 已正式发布。
+本项目是 [tale/headplane](https://github.com/tale/headplane) 的非官方中英双语 fork，保留上游许可证和来源说明。拉取前确认 [v0.8.4-zh](https://github.com/laity-cqf/headplane-zh-cn/releases/tag/v0.8.4-zh) 已正式发布。
 
-部署主机需要 Docker、Docker Compose 及已运行的 Headscale。兼容范围沿用上游 0.8.2；CI 检查 0.27.0、0.27.1、0.28.0、0.29.0 和 0.29.1。
+部署主机需要 Docker、Docker Compose 及已运行的 Headscale。兼容范围沿用上游 0.8.2；CI 检查 0.27.0、0.27.1、0.28.0、0.29.0、0.29.1 和 0.29.7。
 
 1. 将本目录复制到部署主机，执行 `cp .env.example .env` 和 `cp config.yaml.example config.yaml`。
 2. 执行 `docker inspect headscale --format '{{json .NetworkSettings.Networks}}'`，容器名称按实际修改。在 `.env` 中将 `HEADSCALE_DOCKER_NETWORK` 设为查询到的现有网络。
@@ -16,4 +16,6 @@
 
 命名卷在容器重启后保留 Headplane 数据。此最小配置通过 Headscale API 管理设备、用户和策略；修改 Headscale 配置、DNS 设置及 OIDC 限制时，按 [Docker 安装文档](../docs/zh-CN/install/docker.md) 配置可选集成和共享文件。浏览器 SSH 和 Agent 也按需启用。
 
-完整镜像标签 `v0.8.3` 固定保留；`latest` 和 `0.8` 随后续正式版本前移。后续仅发布普通正式镜像，保留 amd64、arm64。无需 Cloudflare 账号或文档托管服务。
+新增可视化操作及版本、权限和重启要求见 [Headscale 0.29 网页管理](../docs/zh-CN/features/headscale-029.md)。
+
+完整镜像标签 `v0.8.4` 固定保留；`latest` 和 `0.8` 随后续正式版本前移。后续仅发布普通正式镜像，保留 amd64、arm64。无需 Cloudflare 账号或文档托管服务。

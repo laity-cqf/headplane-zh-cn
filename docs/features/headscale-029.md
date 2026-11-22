@@ -2,8 +2,8 @@
 
 This unofficial community fork adds forms for Headscale 0.29 management. Existing
 configurations keep working, and opening a page does not enable a capability or
-change the network. The additions below are maintenance-branch changes after
-image `v0.8.3`; install a later release containing them when it becomes available.
+change the network. The additions below ship in community release `v0.8.4-zh` and image `v0.8.4`,
+based on upstream Headplane 0.8.2. The existing `v0.8.3` image stays unchanged.
 
 ## Policy capabilities and tests
 

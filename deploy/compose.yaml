@@ -1,6 +1,6 @@
 services:
   headplane:
-    image: ghcr.io/laity-cqf/headplane-zh-cn:v0.8.3
+    image: ghcr.io/laity-cqf/headplane-zh-cn:v0.8.4
     restart: unless-stopped
     ports:
       - "3000:3000"

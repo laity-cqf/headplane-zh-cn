@@ -2,11 +2,13 @@
 
 ## Upgrading
 
+- Use `ghcr.io/laity-cqf/headplane-zh-cn:v0.8.4` for the Headscale 0.29 visual controls. Mount Headscale YAML with write access to edit server settings and fully restart Headscale after saving when no Docker integration is configured. Upgrade SSH destination clients to Tailscale 1.104.4+ before enabling environment forwarding on Headscale 0.29.7+.
+
 - Change community container image references to `ghcr.io/laity-cqf/headplane-zh-cn`, retaining the existing version tag or digest. The GitHub account has been renamed; the published image contents and application data are unchanged.
 
 ## Changes
 
-- Manage Headscale 0.29 node capabilities, randomized ports, application grants, network/SSH tests, authentication decisions and server lifecycle/HA/client defaults from bilingual web forms. Validate drafts on Headscale without saving; SSH environment forwarding is offered from 0.29.7. The existing v0.8.3 image is unchanged; these additions await a new release.
+- Manage Headscale 0.29 node capabilities, randomized ports, application grants, network/SSH tests, authentication decisions and server lifecycle/HA/client defaults from bilingual web forms. Validate drafts on Headscale without saving; SSH environment forwarding is offered from 0.29.7. Community maintenance release 0.8.4 packages these additions on the same upstream 0.8.2 base; the existing v0.8.3 image is unchanged.
 
 - Community maintenance version 0.8.3 packages the JSON/HuJSON ACL and Grants editors and subnet gateway list, based on upstream 0.8.2. The source and release manifest retain the actual upstream version; full image tags remain immutable.
 
