@@ -229,7 +229,10 @@ test("an unavailable Headscale produces a localized auth key failure instead of 
 test("disabled agent reasons follow the request language while permissions and OIDC visibility stay enforced", async () => {
   await using fixture = await open({ noOidc: true });
   const { app, owner } = fixture;
-  expect(await app.call(settings, "/settings", { as: owner })).toEqual({ hasRestrictions: false });
+  expect(await app.call(settings, "/settings", { as: owner })).toMatchObject({
+    hasRestrictions: false,
+    canConfigure: true,
+  });
   const noOidc = await app.call(restrictions, "/settings/restrictions", {
     as: owner,
     headers: { "Accept-Language": "zh-CN" },
@@ -237,6 +240,9 @@ test("disabled agent reasons follow the request language while permissions and O
   expect(statusOf(noOidc)).toBe(501);
   expect(noOidc).toMatchObject({ data: "此 Headscale 实例尚未配置 OIDC。" });
   const viewer = (await app.signIn("viewer")).cookie;
+  expect(await app.call(settings, "/settings", { as: viewer })).toMatchObject({
+    canConfigure: false,
+  });
   const [chinese, english] = await Promise.all([
     app.call(agent, "/settings/agent", { as: viewer, headers: { "Accept-Language": "zh-CN" } }),
     app.call(agent, "/settings/agent", {

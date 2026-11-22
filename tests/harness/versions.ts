@@ -4,7 +4,7 @@ export const HEADSCALE_VERSIONS = ["0.27.1", "0.28.0", "0.29.7"] as const;
 export type HeadscaleVersion = (typeof HEADSCALE_VERSIONS)[number];
 export const LATEST_HEADSCALE = HEADSCALE_VERSIONS[HEADSCALE_VERSIONS.length - 1];
 
-export const TAILSCALE_IMAGE = "tailscale/tailscale:v1.104.6";
+export const TAILSCALE_IMAGE = "tailscale/tailscale:v1.104.4";
 export const DEX_IMAGE = "dexidp/dex:v2.41.1";
 // Stands in for the browser, on the Node version Headplane runs on.
 export const NODE_IMAGE = "node:24-slim";
