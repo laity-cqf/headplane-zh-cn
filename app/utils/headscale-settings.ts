@@ -19,7 +19,7 @@ export type ControlSettings = {
 
 const defaults: ControlSettings = {
   nodeExpiry: "0",
-  ephemeralTimeout: "30m",
+  ephemeralTimeout: "120s",
   haInterval: "10s",
   haTimeout: "5s",
   autoUpdate: false,

@@ -38,7 +38,7 @@ test("the settings view reads only public settings and retains explicit false an
     }),
   ).toEqual({
     nodeExpiry: "0",
-    ephemeralTimeout: "30m",
+    ephemeralTimeout: "120s",
     haInterval: "0",
     haTimeout: "1s",
     autoUpdate: false,
