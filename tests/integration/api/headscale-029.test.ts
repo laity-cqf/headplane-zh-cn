@@ -63,7 +63,20 @@ describe.for(HS_VERSIONS)("Headscale %s: advanced policy validation", (version) 
           errorDetail: expect.stringContaining("test"),
         });
         await expect(api.policy.set(JSON.stringify(failing))).rejects.toMatchObject({
-          data: { statusCode: 400 },
+          data: { data: { message: expect.stringContaining("test(s) failed") } },
+        });
+        const rejectedSave = await aclAction({
+          context,
+          params: {},
+          request: new Request("http://headplane.test/acls", {
+            method: "PATCH",
+            headers: { Cookie: cookie },
+            body: new URLSearchParams({ policy: JSON.stringify(failing) }),
+          }),
+        } as never);
+        expect(rejectedSave).toMatchObject({
+          init: { status: 400 },
+          data: { success: false, errorDetail: expect.stringContaining("test(s) failed") },
         });
         await expect(
           api.auth.reject("hskey-authreq-aaaaaaaaaaaaaaaaaaaaaaaa"),

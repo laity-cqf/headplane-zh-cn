@@ -143,7 +143,8 @@ export async function aclAction({ request, context }: Route.ActionArgs) {
           400,
         );
       }
-      if (error.data.statusCode === 400) {
+      // SetPolicy reports failed assertions as HTTP 500; CheckPolicy uses 400.
+      if (error.data.statusCode === 400 || message.includes("test(s) failed")) {
         return data(
           {
             success: false as const,
