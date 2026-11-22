@@ -97,7 +97,7 @@ function pullRequestBody(upstream, branch, sha, paths, source = branch) {
       "- [ ] 同步中文文档、配置说明及需要更新的截图。\n" +
       "- [ ] 运行 `pnpm i18n:check`；逐项核对差异后，用 `pnpm i18n:review --message KEY` 或 `--file ENGLISH_PATH` 记录复核，再运行检查。\n" +
       "- [ ] 沿用上游兼容版本，运行构建及相关测试。\n" +
-      "- [ ] stable 升级时更新 `.github/fork-release.json` 的上游版本与提交，使用对应的 `vX.Y.Z-zh` 标签，不添加修订号；完成镜像验收前保持发布门禁。新版本继续使用 stable，不创建 release/X.Y。\n" +
+      "- [ ] stable 升级时更新 `.github/fork-release.json` 的上游版本与提交，清除旧的 communityRelease；默认使用对应的 `vX.Y.Z-zh` 标签。若该版本已用于社区维护发行，显式记录下一个未使用的社区补丁版本，保留真实上游和 package.json 版本。完成镜像验收前保持发布门禁。新版本继续使用 stable，不创建 release/X.Y。\n" +
       "- [ ] 完成翻译验收后合并；不要仅为消除冲突而覆盖中文改动。",
     "本流程只检测更新并创建 PR，不自动合并、不复制版本标签、不发布镜像。" +
       "请检查 PR 的 Actions 状态；如果 GitHub 要求批准工作流运行，先在 PR 页面批准。",

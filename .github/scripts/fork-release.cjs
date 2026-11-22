@@ -73,6 +73,27 @@ function validateState(state, { allowLegacy = false } = {}) {
   )
     throw new Error("Invalid .github/fork-release.json");
   parseTag(`v${state.upstream.version}-zh`);
+  if (Object.hasOwn(state, "communityRelease")) {
+    const release = state.communityRelease;
+    if (
+      !release ||
+      !VERSION_RE.test(release.version ?? "") ||
+      release.upstreamCommit !== state.upstream.commit ||
+      !release.notes ||
+      !["en", "zh-CN"].every(
+        (locale) => typeof release.notes[locale] === "string" && release.notes[locale].trim(),
+      )
+    )
+      throw new Error(
+        "Invalid community release: record its version, pinned upstream and bilingual notes",
+      );
+    const parsed = parseTag(`v${release.version}-zh`);
+    if (
+      parsed.minor !== parseTag(`v${state.upstream.version}-zh`).minor ||
+      compareTags(`v${release.version}-zh`, `v${state.upstream.version}-zh`) <= 0
+    )
+      throw new Error("Invalid community release: use a newer patch in the same upstream series");
+  }
   return state;
 }
 
@@ -81,8 +102,11 @@ function validateTag(state, tag, packageVersion) {
   const parsed = parseTag(tag);
   if (state.channel !== "stable" || !state.publicationReady)
     throw new Error("Only an accepted stable commit can be published");
-  if (parsed.version !== state.upstream.version || packageVersion !== parsed.version)
-    throw new Error("Tag, upstream record and package version must agree");
+  if (
+    parsed.version !== (state.communityRelease?.version ?? state.upstream.version) ||
+    packageVersion !== state.upstream.version
+  )
+    throw new Error("Tag must match the recorded release; package version must match upstream");
   return parsed;
 }
 
@@ -126,7 +150,7 @@ async function assertUnusedImage(image, tag) {
   });
   if (response.ok)
     throw new Error(
-      `Image ${image}:${tag} already exists; keep the existing image and publish the next upstream version instead of overwriting it`,
+      `Image ${image}:${tag} already exists; keep the existing image and select an unused release version`,
     );
   const body = await response.json();
   if (!imageMissing(response.status, body))
@@ -135,11 +159,12 @@ async function assertUnusedImage(image, tag) {
 
 function metadata(state, options) {
   validateState(state, options);
+  const version = state.communityRelease?.version ?? state.upstream.version;
   return {
-    tag: `v${state.upstream.version}-zh`,
-    image_tag: `v${state.upstream.version}`,
-    version: `${state.upstream.version}-zh`,
-    minor: state.upstream.version.split(".").slice(0, 2).join("."),
+    tag: `v${version}-zh`,
+    image_tag: `v${version}`,
+    version: `${version}-zh`,
+    minor: version.split(".").slice(0, 2).join("."),
     image: `ghcr.io/${state.repository.toLowerCase()}`,
   };
 }
@@ -259,6 +284,7 @@ function bundle(state, directory, imageDirectory) {
     tag: meta.tag,
     sourceCommit: sha,
     upstream: state.upstream,
+    ...(state.communityRelease ? { communityRelease: state.communityRelease } : {}),
     unofficial: true,
     images,
     assets: Object.fromEntries(
@@ -273,7 +299,13 @@ function bundle(state, directory, imageDirectory) {
       .join(""),
   );
   const notes = `Community bilingual release / 社区中英双语版 ${meta.tag}\n\nThis is an unofficial fork of [tale/headplane](https://github.com/tale/headplane), not an official Chinese edition. 上游许可证和来源说明完整保留，本项目不是官方中文版。\n\n- Upstream / 上游: v${state.upstream.version} (${state.upstream.commit})\n- Source / 源码提交: ${sha}\n- Upstream release notes / 上游发行说明: https://github.com/tale/headplane/releases/tag/v${state.upstream.version}\n\n${images.map((i) => `- ${i.target}: \`${i.reference}\`\n  - \`${meta.image}@${i.digest}\``).join("\n")}\n\nThe image supports linux/amd64 and linux/arm64. 正式镜像支持 amd64 和 arm64。\n\nSource is available in GitHub’s Source code ZIP/tar.gz archives. English/Chinese documentation snapshots, image digests and checksums are attached. 源码使用 GitHub 自带 Source code ZIP/tar.gz，附件保留双语文档快照、镜像摘要和校验和。\n\nUse the full version tag or digest to pin deployments. 完整版本标签不重复发布；latest 和次版本别名会随发行前移。\n`;
-  writeFileSync(join(output, "release-notes.md"), notes);
+  const summary = state.communityRelease
+    ? `\nChanges / 更新说明\n\n${state.communityRelease.notes.en}\n\n${state.communityRelease.notes["zh-CN"]}\n\nThe community version is ${state.communityRelease.version}; the upstream base remains ${state.upstream.version}. 社区版本号为 ${state.communityRelease.version}，上游基础版本仍为 ${state.upstream.version}。\n`
+    : "";
+  writeFileSync(
+    join(output, "release-notes.md"),
+    notes.replace("\n\n- Upstream / 上游:", summary + "\n\n- Upstream / 上游:"),
+  );
   return manifest;
 }
 

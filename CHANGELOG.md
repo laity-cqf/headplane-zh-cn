@@ -12,6 +12,8 @@
 
 ## Changes
 
+- Community maintenance releases can record an independent patch version and bilingual notes while retaining the real upstream source and package version. Version 0.8.3 packages the stable ACL/Grants compatibility update based on upstream 0.8.2.
+
 - Access Control now groups subnet gateways by prefix, shows Headscale's reported primary and links to route approvals. Explicit empty access rules are preserved when editing the policy.
 
 - Community automation is consolidated into five workflows. Docker releases use short `vX.Y.Z` tags and publish only the final amd64/arm64 image. Release titles show only the tag; source uses GitHub’s built-in archives, while bilingual docs, image digests and checksums remain attached.

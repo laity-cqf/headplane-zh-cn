@@ -41,17 +41,25 @@ Upstream sync 每日北京时间约 09:27 检查上游。发现新提交或正�
 
 ## Docker 与版本规则
 
+### 社区维护版 0.8.3
+
+本次按维护者要求，单独发布社区镜像 `v0.8.3` 和 GitHub 发行 `v0.8.3-zh`。基础仍为上游 `v0.8.2`，不是上游 0.8.3，也不是官方中文版；`package.json` 保持真实上游版本。`.github/fork-release.json` 的 `communityRelease` 单独记录社区版本、对应的上游提交和双语发行说明。
+
+更新内容：兼容 JSON/HuJSON 策略的 `acls`、`grants` 及混合写法，展示和编辑多来源、多目标及协议/端口列表；Grants 需 Headscale 0.29 或更高版本。同时包含子网网关与当前主用列表。完整标签仍不可覆盖，仅发布普通 amd64/arm64 镜像。
+
+后续同步上游时，先清除旧 `communityRelease`，或重新绑定到新上游提交。若上游版本号对应的社区镜像已发布，显式选择下一个未使用的社区补丁版本；不能覆盖历史 `v0.8.3`。未记录独立社区版本时，发行工具默认沿用上游版本。
+
 - 仓库：`ghcr.io/laity-cqf/headplane-zh-cn`。
 - 后续仅构建和发布 Dockerfile 的 `final` 普通正式镜像；支持 `linux/amd64`、`linux/arm64`，不再发布调试版。
 - Docker 完整标签：`vX.Y.Z`，例如 `v0.8.2`。不加 `-zh` 或修订号，完整标签不覆盖。`latest`、次版本别名 `0.8` 可随正式发行前移。
-- GitHub Release/Git 标签：`vX.Y.Z-zh`，每个上游版本只正式发布一次。Release 标题只显示标签；正文保留非官方声明和上游来源。
+- GitHub Release/Git 标签：`vX.Y.Z-zh`，默认与上游对应，明确记录的社区维护版可使用独立补丁版本。每个完整社区版本只发布一次。Release 标题只显示标签；正文保留非官方声明和真实上游来源。
 - 保留多阶段 Dockerfile、Agent、Go/WASM、健康检查、构建缓存和 provenance。镜像发布使用工作流 `GITHUB_TOKEN` 的 Packages、OIDC 和 Attestations 权限。
 - 已发布的旧 `-zh` 标签、调试镜像和附件保持原样。`v0.8.2` 通过迁移指向原正式镜像的相同多架构摘要，不重新构建。
 
 部署示例：
 
 ```yaml
-image: ghcr.io/laity-cqf/headplane-zh-cn:v0.8.2
+image: ghcr.io/laity-cqf/headplane-zh-cn:v0.8.3
 ```
 
 ## 正式发布
@@ -73,7 +81,7 @@ image: ghcr.io/laity-cqf/headplane-zh-cn:v0.8.2
 
 Release 附件保留 `docs-root.tar.gz`、`docs-archive.tar.gz`、`release-manifest.json`、`SHA256SUMS`。源码使用 GitHub 自带 Source code ZIP/tar.gz；清单固定记录源码提交及源码归档 URL，后续不再上传重复的 `source.tar.gz`。历史 `v0.8.2-zh` 已锁定，原附件和校验和继续保留。GitHub 自带源码归档由平台提供，不能单独关闭。
 
-保持 immutable releases 和合并后自动删除分支开启。不得移动已发行 Git 标签、覆盖 Docker 完整版本、使用 `--clobber` 或删除历史镜像、附件。发布后的汉化、打包与文档修正随下一个上游版本发行；分支文档只生成临时预览，不覆盖旧快照。
+保持 immutable releases 和合并后自动删除分支开启。不得移动已发行 Git 标签、覆盖 Docker 完整版本、使用 `--clobber` 或删除历史镜像、附件。发布后的汉化、打包与文档修正默认随下一个上游版本发行；明确要求提前交付时，按社区维护版规则使用新的未占用版本。分支文档只生成临时预览，不覆盖旧快照。
 
 ## Release 手动操作
 
