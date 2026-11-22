@@ -6,6 +6,8 @@
 
 ## Changes
 
+- Manage Headscale 0.29 node capabilities, randomized ports, application grants, network/SSH tests, authentication decisions and server lifecycle/HA/client defaults from bilingual web forms. Validate drafts on Headscale without saving; SSH environment forwarding is offered from 0.29.7. The existing v0.8.3 image is unchanged; these additions await a new release.
+
 - Community maintenance version 0.8.3 packages the JSON/HuJSON ACL and Grants editors and subnet gateway list, based on upstream 0.8.2. The source and release manifest retain the actual upstream version; full image tags remain immutable.
 
 - Access Control now lists subnet gateways and Headscale's reported primary by prefix, and supports Grants, optional via tags and automatic route approvers in English and Simplified Chinese. Editing preserves explicit empty access rules and application capabilities; older Headscale versions reject unsupported Grants before saving.

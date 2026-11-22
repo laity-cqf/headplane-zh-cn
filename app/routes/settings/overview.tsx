@@ -3,20 +3,26 @@ import { ArrowRight } from "lucide-react";
 import Link from "~/components/link";
 import PageError from "~/components/page-error";
 import { useI18n } from "~/i18n/provider";
-import { headscaleConfigContext } from "~/server/context";
+import { authContext, headscaleConfigContext } from "~/server/context";
+import { Capabilities } from "~/server/web/roles";
 
 import type { Route } from "./+types/overview";
 
-export async function loader({ context }: Route.LoaderArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const headscaleConfig = context.get(headscaleConfigContext);
+  const auth = context.get(authContext);
+  const principal = await auth.require(request);
 
   return {
     config: headscaleConfig.writable(),
     hasOidcConfig: headscaleConfig.hasOIDCConfig(),
+    canConfigure: auth.can(principal, Capabilities.configure_iam),
   };
 }
 
-export default function Page({ loaderData: { config, hasOidcConfig } }: Route.ComponentProps) {
+export default function Page({
+  loaderData: { config, hasOidcConfig, canConfigure },
+}: Route.ComponentProps) {
   const { t } = useI18n();
   return (
     <div className="flex max-w-(--breakpoint-lg) flex-col gap-8">
@@ -39,6 +45,16 @@ export default function Page({ loaderData: { config, hasOidcConfig } }: Route.Co
           <ArrowRight className="ml-2 h-5 w-5" />
         </div>
       </Link>
+      {canConfigure ? (
+        <>
+          <Link styled to="/settings/headscale">
+            {t("control.title")}
+          </Link>
+          <Link styled to="/settings/auth-requests">
+            {t("control.auth.title")}
+          </Link>
+        </>
+      ) : null}
       <div className="flex w-full flex-col sm:w-2/3">
         <h1 className="mb-4 text-2xl font-medium">{t("agent.title")}</h1>
         <p>{t("agent.description")}</p>

@@ -100,6 +100,9 @@ describe("capabilitiesFor", () => {
       registerKeyIncludesAuthReqPrefix: false,
       keyExpiryCanBeDisabled: false,
       policySupportsGrants: false,
+      policyCanBeChecked: false,
+      authRequestsCanBeDecided: false,
+      sshAcceptEnvWorks: false,
     });
   });
 
@@ -113,6 +116,10 @@ describe("capabilitiesFor", () => {
     const caps = capabilitiesFor(parseServerVersion("0.29.0"));
     expect(caps.registerKeyIncludesAuthReqPrefix).toBe(true);
     expect(caps.policySupportsGrants).toBe(true);
+    expect(caps.policyCanBeChecked).toBe(true);
+    expect(caps.authRequestsCanBeDecided).toBe(true);
+    expect(caps.sshAcceptEnvWorks).toBe(false);
+    expect(capabilitiesFor(parseServerVersion("0.29.7")).sshAcceptEnvWorks).toBe(true);
   });
 
   test("0.27.1 lacks every 0.28-gated capability", () => {

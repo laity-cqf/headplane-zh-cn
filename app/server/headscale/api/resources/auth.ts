@@ -7,6 +7,7 @@ export interface AuthApi {
    * Used by the Headplane agent to auto-approve its own registration.
    */
   approve(authId: string): Promise<void>;
+  reject(authId: string): Promise<void>;
 }
 
 export function makeAuthApi(
@@ -15,6 +16,9 @@ export function makeAuthApi(
   apiKey: string,
 ): AuthApi {
   return {
+    reject: async (authId) => {
+      await transport.request({ method: "POST", path: "v1/auth/reject", apiKey, body: { authId } });
+    },
     approve: async (authId) => {
       await transport.request({
         method: "POST",

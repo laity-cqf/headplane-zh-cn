@@ -1,10 +1,13 @@
 import { useState } from "react";
 
+import Button from "~/components/button";
 import Link from "~/components/link";
 import TokenList from "~/components/token-list";
 import { Message, useI18n } from "~/i18n/provider";
 import { isValidTagName, type Grant } from "~/utils/acl-policy";
+import { parseAppCapabilities, withAppCapabilities } from "~/utils/policy-extensions";
 
+import JsonField from "../components/json-field";
 import EditorDialog from "./editor-dialog";
 
 interface GrantDialogProps {
@@ -29,12 +32,15 @@ export default function GrantDialog({
 }: GrantDialogProps) {
   const { t } = useI18n();
   const [draft, setDraft] = useState<Grant>(() => structuredClone(grant ?? EMPTY));
+  const [appText, setAppText] = useState(() => JSON.stringify(grant?.extra.app ?? {}, null, 2));
+  const app = parseAppCapabilities(appText);
 
   // A grant that only carries app capabilities has no `ip`.
   const isInvalid =
     draft.src.length === 0 ||
     draft.dst.length === 0 ||
-    (draft.ip.length === 0 && !("app" in draft.extra));
+    app === undefined ||
+    (draft.ip.length === 0 && Object.keys(app ?? {}).length === 0);
 
   return (
     <EditorDialog
@@ -52,7 +58,9 @@ export default function GrantDialog({
       }
       isDisabled={isInvalid}
       isOpen={isOpen}
-      onSubmit={() => onSave(draft)}
+      onSubmit={() => {
+        if (app) onSave({ ...draft, extra: withAppCapabilities(draft.extra, app) });
+      }}
       setIsOpen={setIsOpen}
       title={t(grant ? "acls.editGrant" : "acls.newGrant")}
     >
@@ -93,6 +101,39 @@ export default function GrantDialog({
         validate={isValidTagName}
         values={draft.via}
       />
+      <JsonField
+        description={t("policy29.appDescription")}
+        invalid={app === undefined}
+        label={t("policy29.app")}
+        onChange={setAppText}
+        value={appText}
+      />
+      <div className="flex flex-wrap gap-2">
+        <Button
+          disabled={app === undefined}
+          onClick={() =>
+            setAppText(
+              JSON.stringify(
+                { ...app, "tailscale.com/cap/drive": [{ shares: ["*"], access: "ro" }] },
+                null,
+                2,
+              ),
+            )
+          }
+          type="button"
+        >
+          {t("policy29.taildrivePreset")}
+        </Button>
+        <Button
+          disabled={app === undefined}
+          onClick={() =>
+            setAppText(JSON.stringify({ ...app, "tailscale.com/cap/relay": [] }, null, 2))
+          }
+          type="button"
+        >
+          {t("policy29.relayPreset")}
+        </Button>
+      </div>
     </EditorDialog>
   );
 }

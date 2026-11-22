@@ -18,6 +18,7 @@ interface RulesEditorProps {
   onChange: (policy: Policy) => void;
   isDisabled: boolean;
   canEditGrants: boolean;
+  canEditSshEnvironment: boolean;
   sources: string[];
   destinations: string[];
 }
@@ -35,6 +36,7 @@ export default function RulesEditor({
   onChange,
   isDisabled,
   canEditGrants,
+  canEditSshEnvironment,
   sources,
   destinations,
 }: RulesEditorProps) {
@@ -141,6 +143,8 @@ export default function RulesEditor({
           destinations={destinations}
           isOpen
           onSave={saveSsh}
+          supportsCheck={canEditGrants}
+          supportsAcceptEnv={canEditSshEnvironment}
           rule={sshRule}
           setIsOpen={(open) => {
             if (!open) setEditing(null);
