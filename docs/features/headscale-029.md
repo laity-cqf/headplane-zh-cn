@@ -43,7 +43,9 @@ the file-serving identities with `app` parameters such as:
 }
 ```
 
-The Taildrive preset starts read-only; adjust the share list and access mode as
+New Grants start without IP permissions. Select protocols and ports explicitly
+when network access is required; app-only authorization can keep IP permissions
+empty. The Taildrive preset starts read-only for the `documents` share; adjust the share list and access mode as
 needed. Configure the actual shared directories on the file-serving Tailscale
 client. A policy form cannot create filesystem shares on a remote node.
 

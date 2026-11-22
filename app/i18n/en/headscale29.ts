@@ -44,7 +44,7 @@ export default {
     "OS login users that must require reauthentication through an SSH check rule.",
   "policy29.app": "Application capabilities (app JSON)",
   "policy29.appDescription":
-    "Enter an object mapping capability names to arrays of JSON parameters. Supports Taildrive and peer relay. An app-only grant can leave IP permissions empty. Client setup is still required.",
+    "Enter an object mapping capability names to arrays of JSON parameters. Supports Taildrive and peer relay. New grants start without IP permissions; select protocols/ports only when network access is needed. An app-only grant can leave them empty. Client setup is still required.",
   "policy29.taildrivePreset": "Add Taildrive read-only preset",
   "policy29.relayPreset": "Add peer relay preset",
   "policy29.acceptEnv": "Forward SSH environment variables",

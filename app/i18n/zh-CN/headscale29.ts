@@ -40,7 +40,7 @@ export default {
   "policy29.field.checkDescription": "填写必须通过 SSH check 规则重新验证身份的操作系统登录账号。",
   "policy29.app": "应用能力（app JSON）",
   "policy29.appDescription":
-    "填写“能力名称 → JSON 参数数组”的对象，支持 Taildrive 与 Peer Relay。仅含应用能力的 Grant 可以留空 IP 权限；仍需完成相应客户端配置。",
+    "填写“能力名称 → JSON 参数数组”的对象，支持 Taildrive 与 Peer Relay。新建 Grant 默认不授予 IP 权限；需要网络访问时再选择协议与端口，仅含应用能力的 Grant 可留空。仍需完成相应客户端配置。",
   "policy29.taildrivePreset": "添加 Taildrive 只读预设",
   "policy29.relayPreset": "添加 Peer Relay 预设",
   "policy29.acceptEnv": "转发 SSH 环境变量",
