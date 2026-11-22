@@ -47,8 +47,13 @@ describe.for(testedVersions())("Headscale %s: web management", (version) => {
       expect(await check(failing)).toMatchObject({
         data: { errors: { form: expect.stringContaining("test") } },
       });
-      await expect(tailnet.api.policy.set(JSON.stringify(failing))).rejects.toMatchObject({
-        data: { statusCode: 400 },
+      const rejectedSave = await app.call(aclAction, "/acls", {
+        as: owner,
+        form: { intent: "save", policy: JSON.stringify(failing) },
+      });
+      expect(statusOf(rejectedSave)).toBe(400);
+      expect(rejectedSave).toMatchObject({
+        data: { errors: { form: expect.stringContaining("test(s) failed") } },
       });
     } else {
       expect(statusOf(checked)).toBe(400);
