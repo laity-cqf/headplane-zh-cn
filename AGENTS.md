@@ -1,5 +1,10 @@
 # Headplane
 
+For a new community maintenance session, read `MAINTENANCE.zh-CN.md` (or
+`MAINTENANCE.md`) and `.github/FORK_SETUP.zh-CN.md` before changing code or
+publishing. Recheck live repository and release state, preserve existing user
+changes, and update both handoff manuals when maintenance decisions change.
+
 Headplane is a web UI for Headscale, the self-hosted Tailscale control server.
 Three rules guide every change:
 

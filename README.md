@@ -1,5 +1,7 @@
 # Headplane zh-CN (unofficial fork)
 
+[Maintenance and session handoff](./MAINTENANCE.md) · [中文维护与会话交接](./MAINTENANCE.zh-CN.md)
+
 [简体中文](./README.zh-CN.md) · [Bilingual fork setup](./.github/FORK_SETUP.zh-CN.md)
 
 This is `laity-cqf/headplane-zh-cn`, a community-maintained English and
