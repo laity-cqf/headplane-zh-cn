@@ -7,8 +7,7 @@ Simplified Chinese fork of [tale/headplane](https://github.com/tale/headplane).
 It is not an official Chinese release of Headplane, Headscale, or Tailscale.
 The upstream [MIT license](./LICENSE) and original copyright notices are retained.
 The `main` branch includes English and Simplified Chinese UI and documentation.
-The bilingual stable release is published as `v0.8.2-zh`; its final Docker image
-is `ghcr.io/laity-cqf/headplane-zh-cn:v0.8.2` (amd64/arm64). Bilingual docs stay in the repository and
+Stable community maintenance release `v0.8.3-zh` adds JSON/HuJSON ACL and Grants compatibility, based on upstream 0.8.2. After publication in GitHub Releases, use `ghcr.io/laity-cqf/headplane-zh-cn:v0.8.3` (amd64/arm64). Grants require Headscale 0.29 or later. Bilingual docs stay in the repository and
 Release snapshots, with local previews and no hosted documentation deployment.
 
 Maintenance uses fixed `main` (development) and `stable` (latest stable upstream) branches.

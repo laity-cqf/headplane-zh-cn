@@ -37,6 +37,7 @@ function validateSnapshot(release, files, state, sha, tag) {
   assert.equal(manifest.repository, state.repository);
   assert.equal(manifest.sourceCommit, sha);
   assert.deepEqual(manifest.upstream, state.upstream);
+  assert.deepEqual(manifest.communityRelease, state.communityRelease);
   assert.equal(manifest.unofficial, true);
   const targets = manifest.schemaVersion === 1 ? ["final", "debug-shell"] : ["final"];
   assert.deepEqual(manifest.images.map((image) => image.target).sort(), targets.sort());

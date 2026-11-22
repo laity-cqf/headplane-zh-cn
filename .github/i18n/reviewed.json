@@ -890,7 +890,7 @@
     "validation.required": "b609356db4df000b822a439d80f94f9ffa7f63c5cdbd6de2686ec834315ab793"
   },
   "documents": {
-    "CHANGELOG.md": "a6a23703055c8b92409373ca23c9dcae470c6e3b3e8e2f3334f18d67497db256",
+    "CHANGELOG.md": "60836d92d66b075146692efc56d59acb3e9a6fb5076af4bae8cfe0106bc52867",
     "docs/configuration/api-keys.md": "4f4f5f9825edb87d10d2cff11219de47029f059e029f8f733adb7f9a749adc46",
     "docs/configuration/index.md": "03391cf3a8f82271090706d000d6a6a1cb487d48dd4b5916a9b3a2ab9cf54760",
     "docs/configuration/integrations.mdx": "230d7334fdfd2a39a79e5a10131aa63fc7cba0f9e0d6dec8b0ca979c15d2b1ad",
@@ -899,10 +899,10 @@
     "docs/configuration/sensitive-values.md": "47e2bc1c81fb5bf724f715d978888cf01affed2bdc335987ad2ce522fc642881",
     "docs/configuration/tls.md": "4d8d5c04e2ec504f4203e58c4c49d818bc3be0681b293ce8d69b4cbc203a1d3a",
     "docs/features/acls-bilingual.mdx": "0828bdd79a0e24c327b1eba03faa5ab8e1f1eb941e827bb6ad09acfbc1232899",
-    "docs/features/acls.mdx": "3c236c74549005357883dcd5193255a0001435400c287ca6ae647b2653a57062",
+    "docs/features/acls.mdx": "4c9cef3ce659e56f9326017dd0141c247ce0321cbe8801731f82ee459fa48749",
     "docs/features/agent.mdx": "ce722b5607f1a86dc1ef2fa9f8f3119be2a9df2a7b5fa9b0606494aafe42ac7c",
     "docs/features/dns-bilingual.mdx": "297412d20af2d7658cd4415fac4719cbcfb923b938bd1eb74e00c259f3b6f111",
-    "docs/features/language.mdx": "06366a48308270debf2d85b66d222ed057411b98ab06491313fafd8f92dfcfef",
+    "docs/features/language.mdx": "de7fd0a6c62a711b1abebfea4a8563817410f1f57e50629dfbad185bd3527129",
     "docs/features/machines-bilingual.mdx": "ee2d5440ee05b3c11c88a78d35fe7ed5c3e1298ab90ce325d2b479c630a64954",
     "docs/features/meta.json": "ce0d5b08a87ed55721ef6739e09f9f0e81aaa53875147dd0be3eee9ece6889e8",
     "docs/features/proxy-auth.md": "bda8ded0b28700f99dc57407cff51d133c4d4f204c8f36c7867e55a56c84ee8d",
@@ -924,7 +924,7 @@
     "docs/reference/nixos-options.md": "80f23df72029b36661c745a97e5401522789cd0379194831ec8e77b90520147f",
     "docs/troubleshooting.mdx": "0981eb5ed739df7736f8385aac12150b31a882a99d96dae5ac4e40d6db8a0cd0",
     "docs/upgrading.mdx": "3320d4fdb24c9f2d73d44ca0477ac49e200f92a8ec9e4f9b0ed052e8d971c3c0",
-    "README.md": "7e9e4941bf37b4779e8bd8b7e83c7cf662f52cefdaa2a27bfc91e2bf5994b2c1"
+    "README.md": "f9dd375e5a38b26e1086975ed3863538314b37bc6c67b972347570b22c30e568"
   },
   "shared": {
     "docs/app/components/architecture.tsx": "c83dea130d9adea45bc15d6f2959f3403a850516b7ac549d96495f3a33791cda",

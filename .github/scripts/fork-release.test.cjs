@@ -5,6 +5,7 @@ const { createHash } = require("node:crypto");
 const { mkdtempSync, readFileSync, writeFileSync, rmSync } = require("node:fs");
 const { tmpdir } = require("node:os");
 const { join } = require("node:path");
+const { validateSnapshot } = require("./published-assets.cjs");
 const {
   parseTag,
   publishedVersions,
@@ -26,6 +27,102 @@ const state = {
 test("documentation subprocesses can stream output and still propagate build failures", () => {
   assert.equal(run(process.execPath, ["-e", "process.exit(0)"], { stdio: "inherit" }), "");
   assert.throws(() => run(process.execPath, ["-e", "process.exit(7)"], { stdio: "inherit" }));
+});
+
+test("a community maintenance version stays bound to its actual upstream source", () => {
+  const communityRelease = {
+    version: "0.8.3",
+    upstreamCommit: state.upstream.commit,
+    notes: {
+      en: "Display and edit JSON policies containing ACL and Grants rules.",
+      "zh-CN": "支持 JSON 策略中 ACL 与 Grants 规则的展示和编辑。",
+    },
+  };
+  const maintenance = { ...state, communityRelease };
+  assert.equal(validateTag(maintenance, "v0.8.3-zh", "0.8.2").version, "0.8.3");
+  assert.equal(metadata(maintenance).image_tag, "v0.8.3");
+  assert.throws(() => validateTag(maintenance, "v0.8.2-zh", "0.8.2"));
+  assert.throws(() => validateTag(maintenance, "v0.8.3-zh", "0.8.3"));
+  assert.throws(
+    () =>
+      validateState({
+        ...maintenance,
+        upstream: { ...state.upstream, version: "0.8.3", commit: "b".repeat(40) },
+      }),
+    /community release/,
+  );
+  for (const changes of [
+    { version: "0.8.3-zh.1" },
+    { version: "0.8.1" },
+    { version: "0.9.0" },
+    { upstreamCommit: "c".repeat(40) },
+    { notes: { en: "English only" } },
+  ])
+    assert.throws(
+      () =>
+        validateState({
+          ...state,
+          communityRelease: { ...communityRelease, ...changes },
+        }),
+      /community release/,
+    );
+});
+
+test("maintenance archives and public verification retain the upstream base and bilingual changes", () => {
+  const maintenance = {
+    ...state,
+    communityRelease: {
+      version: "0.8.3",
+      upstreamCommit: state.upstream.commit,
+      notes: { en: "ACL and Grants compatibility.", "zh-CN": "兼容 ACL 与 Grants 写法。" },
+    },
+  };
+  const directory = mkdtempSync(join(tmpdir(), "headplane-maintenance-test-"));
+  try {
+    for (const name of ["docs-root.tar.gz", "docs-archive.tar.gz"])
+      writeFileSync(join(directory, name), "bilingual documentation");
+    writeFileSync(
+      join(directory, "final.json"),
+      JSON.stringify({
+        target: "final",
+        digest: `sha256:${"a".repeat(64)}`,
+      }),
+    );
+    const manifest = bundle(maintenance, directory, directory);
+    assert.equal(manifest.upstream.version, "0.8.2");
+    assert.equal(manifest.communityRelease.version, "0.8.3");
+    const notes = readFileSync(join(directory, "release-notes.md"), "utf8");
+    assert.ok(notes.includes(maintenance.communityRelease.notes.en));
+    assert.ok(notes.includes(maintenance.communityRelease.notes["zh-CN"]));
+    const files = new Map(
+      ["docs-root.tar.gz", "docs-archive.tar.gz", "release-manifest.json", "SHA256SUMS"].map(
+        (name) => [name, readFileSync(join(directory, name))],
+      ),
+    );
+    const release = { tag_name: "v0.8.3-zh", draft: false, prerelease: false, immutable: true };
+    assert.equal(
+      validateSnapshot(release, files, maintenance, manifest.sourceCommit, release.tag_name)
+        .pullReference,
+      "ghcr.io/laity-cqf/headplane-zh-cn:v0.8.3",
+    );
+    assert.throws(() =>
+      validateSnapshot(
+        release,
+        files,
+        {
+          ...maintenance,
+          communityRelease: {
+            ...maintenance.communityRelease,
+            notes: { en: "Changed", "zh-CN": "已改动" },
+          },
+        },
+        manifest.sourceCommit,
+        release.tag_name,
+      ),
+    );
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
 });
 
 test("release archives bind the exact Git source, the final image digest and documentation checksums", () => {

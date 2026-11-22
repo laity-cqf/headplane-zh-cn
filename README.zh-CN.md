@@ -8,7 +8,7 @@
 
 本仓库 `laity-cqf/headplane-zh-cn` 是基于上游 [tale/headplane](https://github.com/tale/headplane) 的社区中英双语维护分支，**不是 Headplane、Headscale 或 Tailscale 的官方中文版**。保留上游 [MIT 许可证](./LICENSE)原文及原作者版权声明。
 
-`main` 已包含中英文界面及文档源码；双语正式版 `v0.8.2-zh` 已发布，正式镜像为 `ghcr.io/laity-cqf/headplane-zh-cn:v0.8.2`（amd64/arm64），双语文档保留在仓库及 Release 快照中，不部署托管文档站。`stable` 已完成语言基础、登录、公共界面、设备、用户、角色、账号关联和成员下载页，以及访问控制的五类可视化编辑器、文件编辑、差异预览及诊断，并配有对应双语指南；现已补齐 DNS、设置（预授权密钥、认证限制和 Agent）、浏览器 SSH，以及完整 VitePress 双语文档、导航、搜索和历史更新日志。语言切换保留表单草稿与 SSH 会话；翻译及容器验收已通过，stable 的实际发行结果以 GitHub Releases 为准。部署前核实[维护指南](./.github/FORK_SETUP.zh-CN.md)中的实际发布状态。
+`main` 已包含中英文界面及文档源码；社区维护版 `v0.8.3-zh` 基于上游 0.8.2，增加 JSON/HuJSON 的 ACL、Grants 兼容；发行完成后使用正式镜像 `ghcr.io/laity-cqf/headplane-zh-cn:v0.8.3`（amd64/arm64），Grants 需要 Headscale 0.29 或更高版本，双语文档保留在仓库及 Release 快照中，不部署托管文档站。`stable` 已完成语言基础、登录、公共界面、设备、用户、角色、账号关联和成员下载页，以及访问控制的五类可视化编辑器、文件编辑、差异预览及诊断，并配有对应双语指南；现已补齐 DNS、设置（预授权密钥、认证限制和 Agent）、浏览器 SSH，以及完整 VitePress 双语文档、导航、搜索和历史更新日志。语言切换保留表单草稿与 SSH 会话；翻译及容器验收已通过，stable 的实际发行结果以 GitHub Releases 为准。部署前核实[维护指南](./.github/FORK_SETUP.zh-CN.md)中的实际发布状态。
 
 <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./docs/assets/preview-dark.png">
@@ -41,7 +41,7 @@ pnpm docs:dev
 
 上游自 v0.6.0 起使用[语义化版本](https://semver.org/)。本仓库沿用上游各分支的功能与兼容范围，不因汉化改变 Headscale 支持要求。
 
-上游 README 将测试中的预发布构建描述为 `next` 标签。维护仓库仅在完成验收并按发布流程推送新标签后发布自己的镜像；本仓库不提供 `next` 镜像。正式镜像使用 `v0.8.2`，另提供 `latest` 和 `0.8`，GitHub Release 标签仍为 `v0.8.2-zh`；镜像架构和发布流程见[维护指南](./.github/FORK_SETUP.zh-CN.md)。
+上游 README 将测试中的预发布构建描述为 `next` 标签。维护仓库仅在完成验收并按发布流程推送新标签后发布自己的镜像；本仓库不提供 `next` 镜像。当前社区维护镜像使用 `v0.8.3`，上游基础为 0.8.2，另提供 `latest` 和 `0.8`，GitHub Release 标签为 `v0.8.3-zh`；镜像架构和发布流程见[维护指南](./.github/FORK_SETUP.zh-CN.md)。
 
 ## 参与贡献
 
