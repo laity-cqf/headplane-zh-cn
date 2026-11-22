@@ -6,6 +6,7 @@ import { authContext, headscaleContext, requestApiContext } from "~/server/conte
 import { isDataWithApiError } from "~/server/headscale/api/error-client";
 import { Capabilities } from "~/server/web/roles";
 import { parsePolicy } from "~/utils/acl-policy";
+import { hasPolicyExtensions } from "~/utils/policy-extensions";
 
 import type { Route } from "./+types/overview";
 
@@ -28,21 +29,37 @@ export async function aclAction({ request, context }: Route.ActionArgs) {
   // Try to write to the ACL policy via the API or via config file (TODO).
   const formData = await request.formData();
   const policyData = formData.get("policy")?.toString();
+  const checking = formData.get("action_id") === "check";
   if (!policyData) {
     throw data(t("acls.error.missingPolicy"), {
       status: 400,
     });
   }
+  if (checking && !context.get(headscaleContext).capabilities.policyCanBeChecked) {
+    return data(
+      {
+        success: false as const,
+        error: t("policy29.version"),
+        errorDetail: t("policy29.version"),
+        policy: undefined,
+        updatedAt: undefined,
+      },
+      400,
+    );
+  }
 
   // Older Headscale versions must not silently ignore grants from the raw editor.
   if (!context.get(headscaleContext).capabilities.policySupportsGrants) {
     const parsed = parsePolicy(policyData);
-    if (parsed.ok && parsed.policy.keyOrder.includes("grants")) {
+    if (
+      parsed.ok &&
+      (parsed.policy.keyOrder.includes("grants") || hasPolicyExtensions(parsed.policy))
+    ) {
       return data(
         {
-          success: false,
+          success: false as const,
           error: t("acls.error.grantsUnsupported"),
-          errorDetail: undefined,
+          errorDetail: t("policy29.version"),
           policy: undefined,
           updatedAt: undefined,
         },
@@ -53,9 +70,21 @@ export async function aclAction({ request, context }: Route.ActionArgs) {
 
   const { api } = await getRequestApi(request);
   try {
+    if (checking) {
+      await api.policy.check(policyData);
+      return data({
+        success: true as const,
+        operation: "check" as const,
+        error: undefined,
+        errorDetail: undefined,
+        policy: policyData,
+        updatedAt: undefined,
+      });
+    }
     const { policy, updatedAt } = await api.policy.set(policyData);
     return data({
-      success: true,
+      success: true as const,
+      operation: "save" as const,
       error: undefined,
       errorDetail: undefined,
       policy,
@@ -89,7 +118,7 @@ export async function aclAction({ request, context }: Route.ActionArgs) {
 
         return data(
           {
-            success: false,
+            success: false as const,
             error: t("acls.error.syntax", { error: trimmed }),
             errorDetail: trimmed,
             policy: undefined,
@@ -105,9 +134,22 @@ export async function aclAction({ request, context }: Route.ActionArgs) {
 
         return data(
           {
-            success: false,
+            success: false as const,
             error: t("acls.error.syntax", { error: trimmed }),
             errorDetail: trimmed,
+            policy: undefined,
+            updatedAt: undefined,
+          },
+          400,
+        );
+      }
+      // SetPolicy reports failed assertions as HTTP 500; CheckPolicy uses 400.
+      if (error.data.statusCode === 400 || message.includes("test(s) failed")) {
+        return data(
+          {
+            success: false as const,
+            error: t("policy29.rejected"),
+            errorDetail: message,
             policy: undefined,
             updatedAt: undefined,
           },

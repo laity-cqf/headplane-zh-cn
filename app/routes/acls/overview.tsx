@@ -1,6 +1,5 @@
 import {
   AlertCircle,
-  Construction,
   Eye,
   FlaskConical,
   Pencil,
@@ -33,6 +32,7 @@ import toast from "~/utils/toast";
 import type { Route } from "./+types/overview";
 import { aclAction } from "./acl-action";
 import { aclLoader } from "./acl-loader";
+import ExtensionsEditor from "./components/extensions-editor";
 import Fallback from "./components/fallback";
 import RulesEditor from "./components/rules-editor";
 import SubnetRoutes from "./components/subnet-routes";
@@ -53,6 +53,8 @@ export default function Page({
     access,
     writable,
     canEditGrants,
+    canCheckPolicy,
+    canEditSshEnvironment,
     canReadRoutes,
     subnetRoutes,
     routesLoaded,
@@ -93,8 +95,8 @@ export default function Page({
     }
 
     if (fetcher.data.success === true) {
-      toast(t("acls.success.saved"));
-      revalidate();
+      toast(t(fetcher.data.operation === "check" ? "policy29.checked" : "acls.success.saved"));
+      if (fetcher.data.operation === "save") revalidate();
     }
   }, [fetcher.data]);
 
@@ -197,6 +199,7 @@ export default function Page({
               <span>{t("acls.tagsGroups")}</span>
             </div>
           </TabsTab>
+          <TabsTab value="extensions">{t("policy29.title")}</TabsTab>
           <TabsTab value="edit">
             <div className="flex items-center gap-2">
               <Pencil className="p-1" />
@@ -220,6 +223,7 @@ export default function Page({
           {structuredPanel((value) => (
             <RulesEditor
               canEditGrants={canEditGrants}
+              canEditSshEnvironment={canEditSshEnvironment}
               destinations={destinations}
               isDisabled={disabled}
               onChange={applyPolicy}
@@ -249,15 +253,45 @@ export default function Page({
             <LazyEditor isDisabled={disabled} onChange={setCodePolicy} value={codePolicy} />
           </Suspense>
         </TabsPanel>
+        <TabsPanel value="extensions">
+          {structuredPanel((value) => (
+            <ExtensionsEditor
+              destinations={destinations}
+              isDisabled={disabled}
+              onChange={applyPolicy}
+              policy={value}
+              sources={sources}
+              supported={canEditGrants}
+            />
+          ))}
+        </TabsPanel>
         <TabsPanel value="diff">
           <Suspense fallback={<Fallback />}>
             <LazyDiffer left={policy} right={codePolicy} />
           </Suspense>
         </TabsPanel>
         <TabsPanel value="preview">
-          <div className="flex flex-col items-center py-8">
-            <Construction />
-            <p className="mt-4 w-1/2 text-center">{t("acls.previewUnavailable")}</p>
+          <div className="flex flex-col gap-4 p-4">
+            <p>{t(canCheckPolicy ? "policy29.checkDescription" : "policy29.version")}</p>
+            <Button
+              disabled={
+                !canCheckPolicy ||
+                !access ||
+                !parsed.ok ||
+                codePolicy.trim() === "" ||
+                fetcher.state !== "idle"
+              }
+              onClick={() =>
+                fetcher.submit({ action_id: "check", policy: codePolicy }, { method: "PATCH" })
+              }
+            >
+              {t("policy29.check")}
+            </Button>
+            {fetcher.data?.success &&
+            fetcher.data.operation === "check" &&
+            fetcher.data.policy === codePolicy ? (
+              <p role="status">{t("policy29.checked")}</p>
+            ) : null}
           </div>
         </TabsPanel>
       </Tabs>

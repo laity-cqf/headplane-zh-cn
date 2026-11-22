@@ -117,7 +117,7 @@ and Tags & Groups tabs show a notice when the loaded policy contains comments â€
 use the file editor if you want to keep them.
 :::
 
-Unknown top-level keys such as `nodeAttrs` and `tests` are preserved
+Unknown top-level keys and advanced sections are preserved
 untouched, so using the visual editor never silently drops parts of a policy
 that Headplane does not model.
 
@@ -136,11 +136,12 @@ and survive editing. Original JavaScript or Headscale parse diagnostics remain
 visible alongside the localized explanation. A failed save does not replace the
 saved policy.
 
-**Preview rules** is an upstream placeholder and does not simulate network
-access. Use **Edit file** for sections that have no form. Acceptance is determined by
-the deployed Headscale version, not by switching the interface language. The
-existing release-line integration matrix remains 0.27.0, 0.27.1, 0.28.0, 0.29.0
-and 0.29.1; localization does not extend those versions' policy syntax.
+**Preview rules** validates a draft through Headscale 0.29's API without saving
+or changing the live policy. The **Headscale 0.29 features** tab edits node
+attributes and network/SSH tests. See [Headscale 0.29 web management](/features/headscale-029)
+for application grants, authentication approvals and server settings. Acceptance
+depends on the deployed Headscale version. The integration matrix covers 0.27.0,
+0.27.1, 0.28.0, 0.29.0, 0.29.1 and 0.29.7; older versions keep their own syntax.
 
 If the policy cannot be parsed, the visual tabs show an explanation and the
 file editor remains available for corrections. A missing file-mode policy has

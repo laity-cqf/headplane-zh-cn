@@ -9,6 +9,7 @@ import Title from "~/components/title";
 import TokenList from "~/components/token-list";
 import { Message, useI18n } from "~/i18n/provider";
 import { KNOWN_SSH_ACTIONS, type SshRule } from "~/utils/acl-policy";
+import { stringList } from "~/utils/policy-extensions";
 
 interface SshRuleDialogProps {
   isOpen: boolean;
@@ -17,6 +18,8 @@ interface SshRuleDialogProps {
   sources: string[];
   destinations: string[];
   onSave: (rule: SshRule) => void;
+  supportsCheck: boolean;
+  supportsAcceptEnv: boolean;
 }
 
 const EMPTY: SshRule = { action: "accept", src: [], dst: [], users: [], extra: {} };
@@ -29,6 +32,8 @@ export default function SshRuleDialog({
   sources,
   destinations,
   onSave,
+  supportsCheck,
+  supportsAcceptEnv,
 }: SshRuleDialogProps) {
   const { t } = useI18n();
   const [draft, setDraft] = useState<SshRule>(rule ?? EMPTY);
@@ -67,7 +72,9 @@ export default function SshRuleDialog({
         <Select
           items={[
             { value: "accept", label: t("acls.acceptOption") },
-            { value: "check", label: t("acls.checkOption") },
+            ...(supportsCheck || draft.action === "check"
+              ? [{ value: "check", label: t("acls.checkOption") }]
+              : []),
             // An action we do not know is listed as-is so it survives an edit.
             ...(KNOWN_SSH_ACTIONS.includes(draft.action)
               ? []
@@ -115,6 +122,17 @@ export default function SshRuleDialog({
             }
             placeholder="12h"
             value={draft.checkPeriod ?? ""}
+          />
+        ) : null}
+        {supportsAcceptEnv || "acceptEnv" in draft.extra ? (
+          <TokenList
+            description={t("policy29.acceptEnvDescription")}
+            emptyText={t("policy29.empty")}
+            label={t("policy29.acceptEnv")}
+            onChange={(acceptEnv) => setDraft({ ...draft, extra: { ...draft.extra, acceptEnv } })}
+            placeholder={t("policy29.acceptEnvPlaceholder")}
+            suggestions={["LANG", "LC_*"]}
+            values={stringList(draft.extra.acceptEnv) ?? []}
           />
         ) : null}
       </DialogPanel>

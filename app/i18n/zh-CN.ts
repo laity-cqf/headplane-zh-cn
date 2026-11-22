@@ -1,11 +1,13 @@
 import type { MessageKey } from "./messages";
 import acls from "./zh-CN/acls";
 import editor from "./zh-CN/editor";
+import headscale29 from "./zh-CN/headscale29";
 import machines from "./zh-CN/machines";
 import release from "./zh-CN/release";
 import remaining from "./zh-CN/remaining";
 import users from "./zh-CN/users";
 export default {
+  ...headscale29,
   ...remaining,
   ...acls,
   ...editor,

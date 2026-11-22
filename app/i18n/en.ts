@@ -1,10 +1,12 @@
 import acls from "./en/acls";
 import editor from "./en/editor";
+import headscale29 from "./en/headscale29";
 import machines from "./en/machines";
 import release from "./en/release";
 import remaining from "./en/remaining";
 import users from "./en/users";
 export default {
+  ...headscale29,
   ...remaining,
   ...acls,
   ...editor,

@@ -51,6 +51,10 @@ export interface Capabilities {
   readonly keyExpiryCanBeDisabled: boolean;
   /** Network grants and via router tags are supported from Headscale 0.29. */
   readonly policySupportsGrants: boolean;
+  readonly policyCanBeChecked: boolean;
+  readonly authRequestsCanBeDecided: boolean;
+  /** SSH acceptEnv is effective from Headscale 0.29.7. */
+  readonly sshAcceptEnvWorks: boolean;
 }
 
 export function capabilitiesFor(version: ServerVersion): Capabilities {
@@ -61,5 +65,8 @@ export function capabilitiesFor(version: ServerVersion): Capabilities {
     registerKeyIncludesAuthReqPrefix: gte(version, "0.29.0"),
     keyExpiryCanBeDisabled: gte(version, "0.29.0"),
     policySupportsGrants: gte(version, "0.29.0"),
+    policyCanBeChecked: gte(version, "0.29.0"),
+    authRequestsCanBeDecided: gte(version, "0.29.0"),
+    sshAcceptEnvWorks: gte(version, "0.29.7"),
   };
 }

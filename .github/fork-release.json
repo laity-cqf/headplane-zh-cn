@@ -15,5 +15,5 @@
       "zh-CN": "兼容 JSON/HuJSON 策略中的 ACL（acls）、Grants（grants）及两者混合写法，支持多来源、多目标、协议与端口列表的展示和编辑。Grants 需要 Headscale 0.29 或更高版本。同时包含子网网关列表与 Headscale 返回的当前主用状态，支持英文和简体中文。"
     }
   },
-  "publicationReady": true
+  "publicationReady": false
 }

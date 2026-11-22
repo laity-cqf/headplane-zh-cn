@@ -48,6 +48,7 @@ function sidebar(chinese: boolean): DefaultTheme.SidebarItem[] {
           items: [item("Proxy Authentication", "代理认证", "/features/proxy-auth")],
         },
         item("Access Control", "访问控制", "/features/acls"),
+        item("Headscale 0.29", "Headscale 0.29", "/features/headscale-029"),
         item("DNS", "DNS", "/features/dns"),
         item("Settings", "设置", "/features/settings"),
         item("Headplane Agent", "Headplane Agent", "/features/agent"),
