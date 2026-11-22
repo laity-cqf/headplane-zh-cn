@@ -41,13 +41,13 @@ Upstream sync 每日北京时间约 09:27 检查上游。发现新提交或正�
 
 ## Docker 与版本规则
 
-### 社区维护版 0.8.3
+### 社区维护版 0.8.4
 
-本次按维护者要求，单独发布社区镜像 `v0.8.3` 和 GitHub 发行 `v0.8.3-zh`。基础仍为上游 `v0.8.2`，不是上游 0.8.3，也不是官方中文版；`package.json` 保持真实上游版本。`.github/fork-release.json` 的 `communityRelease` 单独记录社区版本、对应的上游提交和双语发行说明。
+本次按维护者要求，单独发布社区镜像 `v0.8.4` 和 GitHub 发行 `v0.8.4-zh`。基础仍为上游 `v0.8.2`，不是上游 0.8.4，也不是官方中文版；`package.json` 保持真实上游版本。`.github/fork-release.json` 的 `communityRelease` 单独记录社区版本、对应的上游提交和双语发行说明。
 
-更新内容：兼容 JSON/HuJSON 策略的 `acls`、`grants` 及混合写法，展示和编辑多来源、多目标及协议/端口列表；Grants 需 Headscale 0.29 或更高版本。同时包含子网网关与当前主用列表。完整标签仍不可覆盖，仅发布普通 amd64/arm64 镜像。
+更新内容：增加 Headscale 0.29 节点能力、随机端口、Taildrive／Peer Relay 应用授权、网络／SSH 测试与草稿校验、SSH check、认证审批，以及服务器生命周期、主备探测和客户端默认值的可视化设置。SSH 环境变量转发需 Headscale 0.29.7+ 和目标 Tailscale 1.104.4+。保留 0.8.3 的 JSON/HuJSON ACL、Grants 和子网网关列表。完整标签仍不可覆盖，仅发布普通 amd64/arm64 镜像。
 
-后续同步上游时，先清除旧 `communityRelease`，或重新绑定到新上游提交。若上游版本号对应的社区镜像已发布，显式选择下一个未使用的社区补丁版本；不能覆盖历史 `v0.8.3`。未记录独立社区版本时，发行工具默认沿用上游版本。
+后续同步上游时，先清除旧 `communityRelease`，或重新绑定到新上游提交。若上游版本号对应的社区镜像已发布，显式选择下一个未使用的社区补丁版本；不能覆盖历史 `v0.8.3` 或 `v0.8.4`。未记录独立社区版本时，发行工具默认沿用上游版本。
 
 - 仓库：`ghcr.io/laity-cqf/headplane-zh-cn`。
 - 后续仅构建和发布 Dockerfile 的 `final` 普通正式镜像；支持 `linux/amd64`、`linux/arm64`，不再发布调试版。
@@ -59,7 +59,7 @@ Upstream sync 每日北京时间约 09:27 检查上游。发现新提交或正�
 部署示例：
 
 ```yaml
-image: ghcr.io/laity-cqf/headplane-zh-cn:v0.8.3
+image: ghcr.io/laity-cqf/headplane-zh-cn:v0.8.4
 ```
 
 ## 正式发布

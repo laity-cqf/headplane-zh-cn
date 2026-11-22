@@ -965,7 +965,7 @@
     "validation.required": "b609356db4df000b822a439d80f94f9ffa7f63c5cdbd6de2686ec834315ab793"
   },
   "documents": {
-    "CHANGELOG.md": "ea9193c4252b91c291ef31487abe3f8fb2f3fd4dded0a10f56521600ef5b3cdf",
+    "CHANGELOG.md": "1234f12ca73958bc0daa22d8afe833b4791d7c1629bbebc583c461fe8ef52853",
     "docs/configuration/api-keys.md": "4f4f5f9825edb87d10d2cff11219de47029f059e029f8f733adb7f9a749adc46",
     "docs/configuration/index.md": "03391cf3a8f82271090706d000d6a6a1cb487d48dd4b5916a9b3a2ab9cf54760",
     "docs/configuration/integrations.mdx": "230d7334fdfd2a39a79e5a10131aa63fc7cba0f9e0d6dec8b0ca979c15d2b1ad",
@@ -977,7 +977,7 @@
     "docs/features/acls.mdx": "de92500d28a58bfd4df1445c9499a114479fb193ad8d6f917a8e5c9dd7fa665a",
     "docs/features/agent.mdx": "ce722b5607f1a86dc1ef2fa9f8f3119be2a9df2a7b5fa9b0606494aafe42ac7c",
     "docs/features/dns-bilingual.mdx": "297412d20af2d7658cd4415fac4719cbcfb923b938bd1eb74e00c259f3b6f111",
-    "docs/features/headscale-029.mdx": "0d2a8e6a8662238fc49ddd26b52215fa0c5f3573af6a39be9625ff7accb0f831",
+    "docs/features/headscale-029.mdx": "425fc3f5f128f41308925ab9e93f10810dcdcc25eb9f6c0d78f3d72af4c69b44",
     "docs/features/language.mdx": "de7fd0a6c62a711b1abebfea4a8563817410f1f57e50629dfbad185bd3527129",
     "docs/features/machines-bilingual.mdx": "ee2d5440ee05b3c11c88a78d35fe7ed5c3e1298ab90ce325d2b479c630a64954",
     "docs/features/meta.json": "ea762a8f530e4981a1af00bb48070808ff10f55d8cdbf88024a0413c057d6bc3",
@@ -1000,7 +1000,7 @@
     "docs/reference/nixos-options.md": "80f23df72029b36661c745a97e5401522789cd0379194831ec8e77b90520147f",
     "docs/troubleshooting.mdx": "0981eb5ed739df7736f8385aac12150b31a882a99d96dae5ac4e40d6db8a0cd0",
     "docs/upgrading.mdx": "3320d4fdb24c9f2d73d44ca0477ac49e200f92a8ec9e4f9b0ed052e8d971c3c0",
-    "README.md": "f9dd375e5a38b26e1086975ed3863538314b37bc6c67b972347570b22c30e568"
+    "README.md": "bd8f544a5c3bdadaaccf5a581faed27eb216cfcdfb81ffa2a7ce4b3f7a2a66ba"
   },
   "shared": {
     "docs/app/components/architecture.tsx": "c83dea130d9adea45bc15d6f2959f3403a850516b7ac549d96495f3a33791cda",
