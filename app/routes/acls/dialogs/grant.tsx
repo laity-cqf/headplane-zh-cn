@@ -19,7 +19,7 @@ interface GrantDialogProps {
   onSave: (grant: Grant) => void;
 }
 
-const EMPTY: Grant = { src: [], dst: [], ip: ["*"], via: [], extra: {} };
+const EMPTY: Grant = { src: [], dst: [], ip: [], via: [], extra: {} };
 const IP_SUGGESTIONS = ["*", "tcp:22", "tcp:80", "tcp:443", "udp:53", "icmp"];
 
 export default function GrantDialog({
@@ -115,7 +115,7 @@ export default function GrantDialog({
           onClick={() =>
             setAppText(
               JSON.stringify(
-                { ...app, "tailscale.com/cap/drive": [{ shares: ["*"], access: "ro" }] },
+                { ...app, "tailscale.com/cap/drive": [{ shares: ["documents"], access: "ro" }] },
                 null,
                 2,
               ),
