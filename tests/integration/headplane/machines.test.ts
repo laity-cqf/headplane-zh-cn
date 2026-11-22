@@ -227,7 +227,7 @@ describe("machine tags on a real tailnet", () => {
 
 describe.for(testedVersions())("machine owners and expiry on Headscale %s", (version) => {
   const ownersAreImmutable = version !== "0.27.1";
-  const canDisableExpiry = version === "0.29.5";
+  const canDisableExpiry = version.startsWith("0.29.");
   let tailnet: Tailnet;
   let app: TestApp;
   let owner: string;

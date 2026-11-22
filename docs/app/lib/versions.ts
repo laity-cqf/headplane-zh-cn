@@ -13,7 +13,7 @@ export const versions = {
     sshWebsocketFixed: "0.29.2",
     sshCheck: "0.29",
     grants: "0.29",
-    example: "0.29.5",
+    example: "0.29.7",
   },
 };
 

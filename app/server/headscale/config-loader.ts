@@ -4,6 +4,7 @@ import * as v from "valibot";
 import { Document, parseDocument } from "yaml";
 
 import { ConfigError } from "~/server/config/error";
+import { readControlSettings, type ControlSettings } from "~/utils/headscale-settings";
 import log from "~/utils/log";
 
 import { DNSRecord, HeadscaleDNSConfig, loadHeadscaleDNS } from "./config-dns";
@@ -137,6 +138,7 @@ interface HeadscaleConfigState {
 }
 
 interface HeadscaleConfig {
+  getControlSettings: () => ControlSettings;
   readable: () => boolean;
   writable: () => boolean;
   getDNSConfig: () => DNSConfigView;
@@ -167,6 +169,7 @@ function createHeadscaleConfig(
   };
 
   return {
+    getControlSettings: () => readControlSettings(state.config),
     readable: () => readable(state),
     writable: () => writable(state),
     getDNSConfig: () => getDNSConfig(state),

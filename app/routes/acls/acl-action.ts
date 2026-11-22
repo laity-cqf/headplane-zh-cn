@@ -10,6 +10,7 @@ import { ActionError, createAction } from "~/server/web/actions";
 import { Capabilities } from "~/server/web/roles";
 import { parsePolicy } from "~/utils/acl-policy";
 import { invalid, ok } from "~/utils/form";
+import { hasPolicyExtensions } from "~/utils/policy-extensions";
 
 // Headscale prefixes policy parse errors with one of these, for HuJSON syntax
 // and for the policy structure respectively.
@@ -43,7 +44,10 @@ function createAclAction(locale: Locale) {
 
           // Older Headscale only says `unknown field "grants"`.
           const hasGrants = parsed.policy.keyOrder.includes("grants");
-          if (hasGrants && !capabilities.policySupportsGrants) {
+          if (
+            (hasGrants || hasPolicyExtensions(parsed.policy)) &&
+            !capabilities.policySupportsGrants
+          ) {
             throw new ActionError(t("acls.error.grantsVersion"));
           }
 
@@ -79,6 +83,25 @@ function createAclAction(locale: Locale) {
           }
 
           return ok(t("acls.success.saved"));
+        },
+      },
+      check: {
+        fields: { policy: v.pipe(v.string(), v.minLength(1)) },
+        async handler(input, { api, capabilities }) {
+          if (!capabilities.policyCanBeChecked) throw new ActionError(t("policy29.version"));
+          const parsed = parsePolicy(input.policy, locale);
+          if (!parsed.ok) return invalid({ form: t("acls.error.syntax", { error: parsed.error }) });
+          try {
+            await api.policy.check(input.policy);
+          } catch (error) {
+            if (isDataWithApiError(error) && error.data.statusCode === 400) {
+              return invalid({
+                form: `${t("policy29.rejected")}\n${error.data.data?.message ?? error.data.rawData}`,
+              });
+            }
+            throw error;
+          }
+          return ok(t("policy29.checked"));
         },
       },
     },

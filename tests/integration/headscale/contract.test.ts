@@ -68,6 +68,9 @@ for (const version of testedVersions()) {
         registerKeyIncludesAuthReqPrefix: canDisableExpiry,
         keyExpiryCanBeDisabled: canDisableExpiry,
         policySupportsGrants: acceptsGrants,
+        policyCanBeChecked: acceptsGrants,
+        authRequestsCanBeDecided: acceptsGrants,
+        sshAcceptEnvWorks: version.startsWith("0.29."),
       });
     });
 
