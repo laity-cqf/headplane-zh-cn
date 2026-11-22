@@ -4,13 +4,18 @@ import { describe, expect, onTestFinished, test } from "vitest";
 import { setLocale } from "~/i18n/locale.server";
 import { aclAction } from "~/routes/acls/acl-action";
 import { aclLoader } from "~/routes/acls/acl-loader";
-import { authContext, headscaleLiveStoreContext, requestApiContext } from "~/server/context";
+import {
+  authContext,
+  headscaleContext,
+  headscaleLiveStoreContext,
+  requestApiContext,
+} from "~/server/context";
 import { isDataWithApiError } from "~/server/headscale/api/error-client";
 import { createLiveStore, nodesResource, usersResource } from "~/server/headscale/live-store";
 import { parsePolicy, serializePolicy } from "~/utils/acl-policy";
 
 import { createTestAuth } from "../../unit/auth/create-auth";
-import { getRuntimeClient, HS_VERSIONS } from "../setup/env";
+import { getBootstrapClient, getRuntimeClient, HS_VERSIONS } from "../setup/env";
 
 describe.for(HS_VERSIONS)(
   "Headscale %s: bilingual ACL routes",
@@ -27,6 +32,7 @@ describe.for(HS_VERSIONS)(
       const store = createLiveStore([nodesResource, usersResource]);
       onTestFinished(() => store.dispose());
       context.set(authContext, auth);
+      context.set(headscaleContext, await getBootstrapClient(version));
       context.set(headscaleLiveStoreContext, store);
       context.set(requestApiContext, async (request) => ({
         principal: await auth.require(request),
@@ -91,10 +97,13 @@ describe.for(HS_VERSIONS)(
           expect(loaded.access).toBe(true);
           expect(loaded.writable).toBe(true);
           expect(loaded.policy).toBe(raw);
+          expect(loaded.routesLoaded).toBe(true);
+          expect(loaded.canEditGrants).toBe(version.startsWith("0.29."));
           const parsed = parsePolicy(loaded.policy, locale);
           if (!parsed.ok) throw new Error(parsed.error);
           parsed.policy.hosts.branch = "10.1.0.0/16";
           const visual = serializePolicy(parsed.policy);
+          expect(JSON.parse(visual).acls).toEqual([]);
           expect(visual).not.toContain("// preserved");
           await aclAction(await args(locale, visual));
           expect(JSON.parse((await api.policy.get()).policy)).toMatchObject({
@@ -109,6 +118,20 @@ describe.for(HS_VERSIONS)(
             expect(rejected.data.error).toBe(
               `${locale === "en" ? "Syntax error: " : "语法错误："}${rejected.data.errorDetail}`,
             );
+            expect((await api.policy.get()).policy).toBe(visual);
+          }
+          const grants = JSON.stringify({
+            acls: [],
+            grants: [{ src: ["*"], dst: ["10.82.0.0/16"], ip: ["tcp:22"] }],
+          });
+          const result = await aclAction(await args(locale, grants));
+          if (version.startsWith("0.29.")) {
+            expect(result.data.success).toBe(true);
+            expect(parsePolicy((await api.policy.get()).policy)).toEqual(parsePolicy(grants));
+          } else {
+            expect(result.init).toMatchObject({ status: 400 });
+            expect(result.data.success).toBe(false);
+            expect(result.data.error).toContain("Headscale 0.29");
             expect((await api.policy.get()).policy).toBe(visual);
           }
         }

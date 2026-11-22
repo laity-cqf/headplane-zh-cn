@@ -2,9 +2,10 @@ import { data } from "react-router";
 
 import { getLocale } from "~/i18n/locale.server";
 import { createTranslator } from "~/i18n/messages";
-import { authContext, requestApiContext } from "~/server/context";
+import { authContext, headscaleContext, requestApiContext } from "~/server/context";
 import { isDataWithApiError } from "~/server/headscale/api/error-client";
 import { Capabilities } from "~/server/web/roles";
+import { parsePolicy } from "~/utils/acl-policy";
 
 import type { Route } from "./+types/overview";
 
@@ -31,6 +32,23 @@ export async function aclAction({ request, context }: Route.ActionArgs) {
     throw data(t("acls.error.missingPolicy"), {
       status: 400,
     });
+  }
+
+  // Older Headscale versions must not silently ignore grants from the raw editor.
+  if (!context.get(headscaleContext).capabilities.policySupportsGrants) {
+    const parsed = parsePolicy(policyData);
+    if (parsed.ok && parsed.policy.keyOrder.includes("grants")) {
+      return data(
+        {
+          success: false,
+          error: t("acls.error.grantsUnsupported"),
+          errorDetail: undefined,
+          policy: undefined,
+          updatedAt: undefined,
+        },
+        400,
+      );
+    }
   }
 
   const { api } = await getRequestApi(request);

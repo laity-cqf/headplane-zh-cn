@@ -2,11 +2,17 @@ import { data } from "react-router";
 
 import { getLocale } from "~/i18n/locale.server";
 import { createTranslator } from "~/i18n/messages";
-import { authContext, headscaleLiveStoreContext, requestApiContext } from "~/server/context";
+import {
+  authContext,
+  headscaleContext,
+  headscaleLiveStoreContext,
+  requestApiContext,
+} from "~/server/context";
 import { isDataWithApiError } from "~/server/headscale/api/error-client";
-import { nodesResource, usersResource } from "~/server/headscale/live-store";
+import { usersResource } from "~/server/headscale/live-store";
 import { Capabilities } from "~/server/web/roles";
 import log from "~/utils/log";
+import { groupSubnetRoutes, type SubnetRouteGroup } from "~/utils/subnet-routes";
 
 import type { Route } from "./+types/overview";
 
@@ -36,6 +42,10 @@ export async function aclLoader({ request, context }: Route.LoaderArgs) {
     access: auth.can(principal, Capabilities.write_policy),
     writable: false,
     policy: "",
+    canReadRoutes: auth.can(principal, Capabilities.read_machines),
+    canEditGrants: context.get(headscaleContext).capabilities.policySupportsGrants,
+    subnetRoutes: [] as SubnetRouteGroup[],
+    routesLoaded: false,
     // Context for the visual editor; both are optional.
     users: [] as string[],
     tagUsage: [] as { tag: string; nodes: string[] }[],
@@ -44,16 +54,23 @@ export async function aclLoader({ request, context }: Route.LoaderArgs) {
   // Try to load the ACL policy from the API.
   const { api } = await getRequestApi(request);
 
-  try {
-    const [nodesSnap, usersSnap] = await Promise.all([
-      headscaleLiveStore.get(nodesResource, api),
-      headscaleLiveStore.get(usersResource, api),
-    ]);
+  const [nodesResult, usersResult] = await Promise.allSettled([
+    flags.canReadRoutes ? api.nodes.list() : Promise.resolve([]),
+    headscaleLiveStore.get(usersResource, api),
+  ]);
 
-    flags.users = usersSnap.data.map((user) => user.name).sort();
+  if (usersResult.status === "fulfilled") {
+    flags.users = usersResult.value.data.map((user) => user.name).sort();
+  } else {
+    log.warn("api", "Failed to load ACL users: %s", String(usersResult.reason));
+  }
+  if (nodesResult.status === "fulfilled" && flags.canReadRoutes) {
+    const nodes = nodesResult.value;
+    flags.subnetRoutes = groupSubnetRoutes(nodes);
+    flags.routesLoaded = true;
 
     const usage = new Map<string, string[]>();
-    for (const node of nodesSnap.data) {
+    for (const node of nodes) {
       for (const tag of node.tags) {
         usage.set(tag, [...(usage.get(tag) ?? []), node.givenName || node.name]);
       }
@@ -61,8 +78,8 @@ export async function aclLoader({ request, context }: Route.LoaderArgs) {
     flags.tagUsage = Array.from(usage.entries())
       .map(([tag, nodes]) => ({ tag, nodes }))
       .sort((a, b) => a.tag.localeCompare(b.tag));
-  } catch (error) {
-    log.warn("api", "Failed to load ACL editor context: %s", String(error));
+  } else if (nodesResult.status === "rejected") {
+    log.warn("api", "Failed to load subnet routes: %s", String(nodesResult.reason));
   }
 
   try {
@@ -76,7 +93,7 @@ export async function aclLoader({ request, context }: Route.LoaderArgs) {
       // set to file but no file exists, and returns a 500 when database
       // mode is used but the policies table is empty.
       // https://github.com/juanfont/headscale/blob/c4600346f9c29b514dc9725ac103efb9d0381f23/hscontrol/types/policy.go#L10
-      if (error.data.rawData.includes("acl policy not found") || error.data.statusCode === 500) {
+      if (error.data.rawData.includes("acl policy not found")) {
         flags.policy = "";
         flags.writable = true;
         return flags;
