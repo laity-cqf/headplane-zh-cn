@@ -16,7 +16,7 @@
 
 [访问控制与策略编辑器](/zh-CN/features/acls)也已接入：访问规则、SSH 规则、主机别名、标签、用户组、提示、解析说明及编辑器控件。切换语言保留草稿和策略原始值。
 
-[DNS](/zh-CN/features/dns)、[设置](/zh-CN/features/settings)和[浏览器 SSH](/zh-CN/features/ssh)现已支持双语。全部 VitePress 页面均有中文版本，包括安装、配置、SSO、NixOS 选项、架构及完整历史更新日志；导航、本地搜索和语言切换支持根路径及 /0.8/ 归档。翻译及容器验收已完成，`v0.8.2-zh` 双语正式版已发布，正式镜像为 `ghcr.io/laity-cqf/headplane-zh-cn:v0.8.2`（amd64/arm64）。
+[DNS](/zh-CN/features/dns)、[设置](/zh-CN/features/settings)和[浏览器 SSH](/zh-CN/features/ssh)现已支持双语。全部 VitePress 页面均有中文版本，包括安装、配置、SSO、NixOS 选项、架构及完整历史更新日志；导航、本地搜索和语言切换支持根路径及 /0.8/ 归档。翻译及容器验收已完成，社区维护版 `v0.8.4-zh` 已发布，正式镜像为 `ghcr.io/laity-cqf/headplane-zh-cn:v0.8.4`（amd64/arm64）。
 
 ## 选择界面语言 {#choose-the-interface-language}
 
@@ -54,7 +54,7 @@ pnpm i18n:check
 
 ## 发布状态 {#publication-status}
 
-翻译及运行验收记录在 `.github/release-acceptance.json`。`pnpm i18n:release` 现校验已完成范围；发布流程还要求 stable 精确提交的检查通过。候选版本通过验收不等于镜像仓库已完成发布。
+当前验收以精确提交的 CI 和各不可变 Release 清单为准，首次发行快照仅作历史参考。`pnpm i18n:release` 现校验已完成范围；发布流程还要求 stable 精确提交的检查通过。候选版本通过验收不等于镜像仓库已完成发布。
 
 发布线文档构建保留上游根路径及 `/0.8/` 归档格式。分支构建只保存临时 Actions 产物；正式发行验收通过后附带双语快照。单独推送文档不会创建发行版或覆盖旧附件。阅读源码、执行 `pnpm docs:dev` 本地预览，或下载对应 Release 快照并通过 HTTP 服务打开；不部署托管文档站，也不需要托管凭据。
 
@@ -66,6 +66,6 @@ pnpm i18n:check
 
 社区版本标签例如 `v0.8.2-zh`。每个已发布版本都在 GitHub Releases 保留源码、双语文档快照、正式多架构镜像的摘要和校验和。Docker 完整镜像标签使用 `vX.Y.Z`，例如 `v0.8.2`；GitHub Release/Git 标签保留 `-zh`。完整镜像标签不重复使用；`latest`、`0.8` 可以前移。后续仅发布普通正式镜像，保留 amd64/arm64。源码使用 GitHub 自带 ZIP/tar.gz，后续发行不再附加重复的源码包。默认沿用上游版本，不添加修订号。明确要求提前交付维护修正时，可在 `.github/fork-release.json` 单独记录社区补丁版本，绑定真实上游提交并附双语发行说明。社区 0.8.3 基于上游 0.8.2，增加 JSON/HuJSON 的 ACL、Grants 兼容。社区 0.8.4 在相同上游基础上增加 [Headscale 0.29 可视化操作](/features/headscale-029)。下次升级上游时清除或重新绑定此覆盖记录；若标签已占用，选择下一个未使用的社区版本。旧镜像、标签和附件保持原样。临时 PR 分支合并后自动删除。
 
-本项目是非官方社区维护版本，完整保留上游 MIT 许可证及来源说明。验收门禁和操作步骤见仓库内的 `.github/FORK_SETUP.zh-CN.md`。
+本项目是非官方社区维护版本，完整保留上游 MIT 许可证及来源说明。验收门禁和操作步骤见仓库内的 `session/MAINTENANCE.zh-CN.md`。
 
 工作流保留 5 个：**Build**（编译、单元/集成测试、Nix 和容器运行验收）、**Translations**、**Docs**（根路径/归档预览）、**Upstream sync** 和 **Release**。Release 同时负责上传恢复及匿名镜像检查。现有不可变发行及历史调试镜像继续保留。

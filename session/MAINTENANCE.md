@@ -1,6 +1,6 @@
 # Headplane community fork: maintenance and session handoff
 
-[简体中文](./MAINTENANCE.zh-CN.md) · [Project rules](./AGENTS.md) · [Release and credentials guide](./.github/FORK_SETUP.zh-CN.md)
+[简体中文](./MAINTENANCE.zh-CN.md) · [Session entry](./README.md) · [Project rules](../AGENTS.md)
 
 Verified on 2026-11-22. Start future sessions here for feature work, upstream upgrades, translation, builds, releases and recovery. Versions, commits and acceptance results below are a dated snapshot. Check the repository and GitHub again before acting.
 
@@ -10,7 +10,8 @@ Paste this into a new session and supply the task:
 
 ```text
 Project: E:\code\headplane.
-Read AGENTS.md, MAINTENANCE.md (or MAINTENANCE.zh-CN.md), and .github/FORK_SETUP.zh-CN.md.
+Read AGENTS.md, session/README.md and the newest session/HISTORY.md entries.
+Read the relevant sections of session/MAINTENANCE.md and only the affected code.
 Check the branch, worktrees, staged/unstaged changes, latest Release and relevant CI.
 Preserve existing changes. Never commit production configuration or credentials from ydzw.
 Keep main/stable as the two long-lived branches, complete English/Chinese support,
@@ -19,19 +20,22 @@ Execute routine terminal commands and reversible development work without asking
 for confirmation for each command; follow the current task's instructions.
 Keep the release gates. Do not create a release or deploy production without a
 clear task to do so.
-Record changes, validation, source commits, release status and next steps in this manual.
+Update session/README.md status and prepend changes, validation and next steps to
+session/HISTORY.md. Update both manuals when maintenance rules change.
+Do not scan the entire project again when the task index identifies the affected files.
 
 Current task: ...
 ```
 
 Read in this order:
 
-1. `AGENTS.md`: development, errors, testing and community release constraints.
-2. This manual: current state and operating procedures.
-3. `.github/FORK_SETUP.zh-CN.md`: workflows, permissions, publishing and recovery.
-4. `.github/fork-release.json`: upstream base, channel and community version for the **current branch**.
-5. `.github/I18N_AUDIT.zh-CN.md`: translation audit and selected fingerprint review.
-6. Relevant code, tests and feature docs. On `main`, read `app/server/ARCHITECTURE.md` and `tests/README.md` for server work. Use stable's own layout instead of assuming the newer harness exists there.
+1. `AGENTS.md`: project rules.
+2. `session/README.md` and newest `session/HISTORY.md` entries: state, completed changes and next steps.
+3. This manual’s relevant feature, translation, upgrade, build, publication or recovery sections.
+4. `.github/fork-release.json` and relevant CI to verify branch and acceptance.
+5. Only the affected code, tests and feature docs. Main server work uses `app/server/ARCHITECTURE.md` and `tests/README.md`; stable retains its native harness.
+
+Except for Markdown relative links, source paths and command working directories refer to the repository root.
 
 Explicit current instructions can change an earlier design; update the rules and docs together. Authorization cannot remove an actual execution-environment restriction. Report the source of a real blocker instead of claiming an action succeeded.
 
@@ -53,6 +57,8 @@ Explicit current instructions can change an earlier design; update the rules and
 | Previous releases              | Preserve `v0.8.2-zh`, `v0.8.3-zh`, their original images and attachments                                                                                                                                            |
 
 Keep three versions distinct: **community Headplane image**, **actual upstream Headplane base**, and **connected Headscale server**. Community 0.8.4 does not claim an upstream Headplane 0.8.4 release and does not upgrade Headscale. Tailscale clients and Dex have separate versions too.
+
+The GitHub account was renamed from `CM-Chenqf` to `laity-cqf`. New repository/image references use the new namespace; keep original names, attribution and checksums in historical immutable assets.
 
 The peeled Git tag commit, `release-manifest.json`, and acceptance run's `headSha` identify released source. GitHub's Release `target_commitish` may display default branch `main`; it does not prove that the release was built from `main`.
 
@@ -187,7 +193,9 @@ The file example is for `main`; stable uses `docs/features/headscale-029.md`. Re
 
 On stable also run `node scripts/i18n/release-status.mjs` and `pnpm i18n:release` for `.github/i18n/scope.json` completeness. Do not invent equivalent commands on main when absent.
 
-These two root manuals are maintained together by human review. Current automatic document pairing covers README, CHANGELOG and docs-site pages; **it does not automatically cover the root manuals**. Update both manuals and review them explicitly. Do not claim automatic coverage or add exceptions for them.
+These two manuals in `session/` are maintained together by human review. Current automatic document pairing covers the root README, CHANGELOG and docs-site pages; **it does not automatically cover session files**. Update both manuals and review them explicitly. Do not claim automatic coverage or add exceptions for them.
+
+The audit covers message keys, empty translations, placeholders/counts, common JSX/attribute/error text, paired docs/navigation, and selected SHA-256 review fingerprints. Exceptions must match exactly and carry a reason, never a broad bypass. Dynamic strings, third-party components, Go/WASM and remote diagnostics need manual scenario review; shared docs-source changes also require review. CI is read-only and never refreshes fingerprints, merges or publishes automatically. Do not execute unreviewed upstream code with a writable `pull_request_target`.
 
 ## 9. Upstream and Headscale upgrades
 
@@ -360,27 +368,10 @@ For production dashboard updates, pin a full published tag/digest and retain Hea
 
 Preview `docs-root.tar.gz` at `/` and `docs-archive.tar.gz` at its minor path, such as `/0.8/`, through a local static server. No Cloudflare deployment is needed.
 
-## 14. Pending work and session records
+## 14. Session records and next steps
 
-Handoff baseline: 0.8.4 is published with complete acceptance. This manual is a new branch-source change; **it is not inserted into the locked 0.8.4 image/docs attachments**. Package later branch changes with the next explicitly requested release.
+Keep current state in [README.md](./README.md) and completed stages/templates in [HISTORY.md](./HISTORY.md). Update these after each task; update both manuals only when processes, architecture or lasting rules change. Avoid duplicate records and repeated whole-repository scans.
 
-2026-11-22 manual update: added both manuals and README/AGENTS entry points, and corrected the release guide's current version and push-CI requirement. Local unit tests passed: 325 on main and 307 on stable. Both translation checks and docs builds passed, as did stable's release translation-scope checks. This change only touches docs/review records; no new local container tests, image publication or production operations were performed. Use the pushed commit's GitHub Actions records for its subsequent CI results.
+The old fork setup, translation audit and initial progress report have been consolidated into this manual/history. Keep machine metadata, check scopes and release scripts. User installation/feature docs remain in `docs/`; retain licensing, security, contributing and release history.
 
-The user deferred direct-connect network troubleshooting. Do not reopen it as a development task unless requested. The reported client-to-gateway path uses self-hosted DERP; this alone does not prove UDP is blocked. Disabling local firewalls does not guarantee NAT traversal. Do not promise that ACL edits, random ports or a panel upgrade will fix direct connectivity.
-
-At each completed stage, record the following here or in the related Issue/PR, and keep key status in both manuals aligned. Exclude credentials, full production configs and secret-bearing logs.
-
-```text
-Date / task:
-Target branch and working directory:
-Actual changes and compatibility boundaries:
-Source commit / PR:
-Local validation: commands/results; unrun checks and reasons:
-CI: exact SHA, run URL, conclusion:
-Release: not released / in progress / published; Git tag, image tag, digest, platforms:
-Production: untouched / explicitly executed scope:
-Unresolved issues and material risks:
-Next action and completion conditions:
-```
-
-Before handoff, confirm traceable files, preserved user changes, matching bilingual explanations, no production-file leaks, no unnecessary temporary branches, and a clear distinction between documentation, branch state and published state. A new session should continue using the repository and these links without recovering old chats.
+Before handoff, verify preserved user changes, source commits, validation and release/production status. Branch docs do not overwrite locked 0.8.4 images/assets. Check production deployment separately.

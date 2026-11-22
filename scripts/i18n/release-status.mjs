@@ -14,7 +14,7 @@ if (
   scope.pending.length
 ) {
   console.error(
-    "Release blocked: stable localization and publication acceptance are incomplete. See .github/I18N_PROGRESS.zh-CN.md.",
+    "Release blocked: stable localization and publication acceptance are incomplete. See session/README.md and .github/i18n/scope.json.",
   );
   process.exitCode = 1;
 }

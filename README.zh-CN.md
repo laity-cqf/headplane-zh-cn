@@ -1,6 +1,6 @@
 # Headplane zh-CN（非官方 fork）
 
-[完整维护与会话交接手册](./MAINTENANCE.zh-CN.md) · [English maintenance manual](./MAINTENANCE.md)
+[会话入口与维护记录](./session/README.md)
 
 [English](./README.md) · 简体中文
 
@@ -35,6 +35,6 @@ Headscale 是 Tailscale 控制服务器的自托管实现，默认不带 Web 界
 ![ACL（上游英文界面截图）](./docs/assets/acls-light.png)
 ![设备管理（上游英文界面截图）](./docs/assets/machine-light.png)
 
-维护固定使用 `main`（开发）和 `stable`（最新上游正式版）。社区标签如 `v0.8.2-zh` 保留对应源码、文档与镜像摘要；升级不再新建长期版本分支。详见[发行维护指南](./.github/FORK_SETUP.zh-CN.md)。
+维护固定使用 `main`（开发）和 `stable`（最新上游正式版）。社区标签如 `v0.8.2-zh` 保留对应源码、文档与镜像摘要；升级不再新建长期版本分支。详见[发行维护指南](./session/MAINTENANCE.zh-CN.md)。
 
 > Copyright (c) 2025 Aarnav Tale
