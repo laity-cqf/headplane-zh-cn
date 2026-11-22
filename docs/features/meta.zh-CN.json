@@ -4,6 +4,7 @@
     "sso",
     "proxy-auth",
     "acls",
+    "headscale-029",
     "agent",
     "ssh",
     "language",

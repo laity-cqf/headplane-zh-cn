@@ -64,6 +64,15 @@ export function makeNodeApi(
       await transport.request({ method: "DELETE", path: `v1/node/${id}`, apiKey });
     },
     register: async (user, key) => {
+      if (capabilities.registerKeyIncludesAuthReqPrefix) {
+        const { node } = await transport.request<{ node: RawMachine }>({
+          method: "POST",
+          path: "v1/auth/register",
+          apiKey,
+          body: { user, authId: key },
+        });
+        return normalize(node);
+      }
       // Headscale's node registration endpoint expects the key as both the
       // query string and body input. Pre 0.29 also expects the raw ID, 0.29+
       // expects the full `hskey-authreq-<id>` pattern.

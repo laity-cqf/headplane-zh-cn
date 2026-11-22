@@ -56,11 +56,18 @@ export interface Capabilities {
    * 0.29.0.
    */
   readonly policySupportsGrants: boolean;
+  readonly policyCanBeChecked: boolean;
+  readonly authRequestsCanBeDecided: boolean;
+  /** SSH acceptEnv is effective from Headscale 0.29.7. */
+  readonly sshAcceptEnvWorks: boolean;
 }
 
 export function capabilitiesFor(version: ServerVersion): Capabilities {
   return {
     preAuthKeysHaveStableIds: gte(version, "0.28.0"),
+    policyCanBeChecked: gte(version, "0.29.0"),
+    authRequestsCanBeDecided: gte(version, "0.29.0"),
+    sshAcceptEnvWorks: gte(version, "0.29.7"),
     nodeTagsAreFlat: gte(version, "0.28.0"),
     nodeOwnerIsImmutable: gte(version, "0.28.0"),
     registerKeyIncludesAuthReqPrefix: gte(version, "0.29.0"),

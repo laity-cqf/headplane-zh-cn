@@ -68,6 +68,9 @@ for (const version of testedVersions()) {
         registerKeyIncludesAuthReqPrefix: canDisableExpiry,
         keyExpiryCanBeDisabled: canDisableExpiry,
         policySupportsGrants: acceptsGrants,
+        policyCanBeChecked: acceptsGrants,
+        authRequestsCanBeDecided: acceptsGrants,
+        sshAcceptEnvWorks: version.startsWith("0.29."),
       });
     });
 
@@ -526,5 +529,25 @@ for (const version of testedVersions()) {
 
       expect(result).toMatch(acceptsGrants ? /^accepted$/ : /unknown field "grants"/);
     });
+
+    test.skipIf(!acceptsGrants)(
+      "draft checks are non-persistent and failed assertions reject saves with an HTTP 500 diagnostic",
+      async () => {
+        const before = await tailnet.api.policy.get();
+        const draft = { acls: [], tests: [{ src: "100.64.0.1", deny: ["10.82.138.99:22"] }] };
+        await tailnet.api.policy.check(JSON.stringify(draft));
+        const failing = JSON.stringify({
+          ...draft,
+          tests: [{ src: "100.64.0.1", accept: ["10.82.138.99:22"] }],
+        });
+        await expect(tailnet.api.policy.check(failing)).rejects.toMatchObject({
+          data: { statusCode: 400, data: { message: expect.stringContaining("test(s) failed") } },
+        });
+        await expect(tailnet.api.policy.set(failing)).rejects.toMatchObject({
+          data: { statusCode: 500, data: { message: expect.stringContaining("test(s) failed") } },
+        });
+        expect(await tailnet.api.policy.get()).toEqual(before);
+      },
+    );
   });
 }

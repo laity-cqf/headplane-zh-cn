@@ -3,12 +3,14 @@ import acls from "./zh-CN/acls";
 import dns from "./zh-CN/dns";
 import editor from "./zh-CN/editor";
 import errors from "./zh-CN/errors";
+import headscale29 from "./zh-CN/headscale29";
 import machines from "./zh-CN/machines";
 import settings from "./zh-CN/settings";
 import ssh from "./zh-CN/ssh";
 import users from "./zh-CN/users";
 
 export default {
+  ...headscale29,
   ...acls,
   ...dns,
   ...editor,

@@ -1,5 +1,4 @@
 import {
-  Construction,
   Eye,
   FileX,
   FlaskConical,
@@ -34,6 +33,7 @@ import { toastClientAction } from "~/utils/toast";
 import type { Route } from "./+types/overview";
 import { aclAction } from "./acl-action";
 import { aclLoader } from "./acl-loader";
+import ExtensionsEditor from "./components/extensions-editor";
 import Fallback from "./components/fallback";
 import RulesEditor from "./components/rules-editor";
 import SubnetRoutes from "./components/subnet-routes";
@@ -55,6 +55,8 @@ export default function Page({
     access,
     writable,
     canEditGrants,
+    canCheckPolicy,
+    canEditSshEnvironment,
     canReadRoutes,
     subnetRoutes,
     routesLoaded,
@@ -65,6 +67,7 @@ export default function Page({
 }: Route.ComponentProps) {
   const { locale, t } = useI18n();
   const [codePolicy, setCodePolicy] = useState(policy);
+  const [checkedPolicy, setCheckedPolicy] = useState<string>();
   const [savedPolicy, setSavedPolicy] = useState(policy);
   if (savedPolicy !== policy) {
     setSavedPolicy(policy);
@@ -72,6 +75,7 @@ export default function Page({
   }
 
   const fetcher = useFetcher<ActionResult>();
+  const checker = useFetcher<ActionResult>();
   const disabled = !access || !writable; // Disable if no permission or not writable
 
   const parsed = useMemo(() => parsePolicy(codePolicy, locale), [codePolicy, locale]);
@@ -191,6 +195,7 @@ export default function Page({
               <span>{t("acls.editFile")}</span>
             </div>
           </TabsTab>
+          <TabsTab value="extensions">{t("policy29.title")}</TabsTab>
           <TabsTab value="diff">
             <div className="flex items-center gap-2">
               <Eye className="p-1" />
@@ -208,6 +213,7 @@ export default function Page({
           {structuredPanel((value) => (
             <RulesEditor
               canEditGrants={canEditGrants}
+              canEditSshEnvironment={canEditSshEnvironment}
               destinations={destinations}
               isDisabled={disabled}
               onChange={applyPolicy}
@@ -237,15 +243,46 @@ export default function Page({
             <LazyEditor isDisabled={disabled} onChange={setCodePolicy} value={codePolicy} />
           </Suspense>
         </TabsPanel>
+        <TabsPanel value="extensions">
+          {structuredPanel((value) => (
+            <ExtensionsEditor
+              destinations={destinations}
+              isDisabled={disabled}
+              onChange={applyPolicy}
+              policy={value}
+              sources={sources}
+              supported={canEditGrants}
+            />
+          ))}
+        </TabsPanel>
         <TabsPanel value="diff">
           <Suspense fallback={<Fallback />}>
             <LazyDiffer left={policy} right={codePolicy} />
           </Suspense>
         </TabsPanel>
         <TabsPanel value="preview">
-          <div className="flex flex-col items-center py-8">
-            <Construction />
-            <p className="mt-4 w-1/2 text-center">{t("acls.previewUnavailable")}</p>
+          <div className="flex flex-col gap-4 p-4">
+            <p>{t(canCheckPolicy ? "policy29.checkDescription" : "policy29.version")}</p>
+            <Button
+              disabled={
+                !canCheckPolicy ||
+                !access ||
+                !parsed.ok ||
+                codePolicy.trim() === "" ||
+                checker.state !== "idle"
+              }
+              onClick={() => {
+                setCheckedPolicy(codePolicy);
+                checker.submit({ intent: "check", policy: codePolicy }, { method: "POST" });
+              }}
+            >
+              {t("policy29.check")}
+            </Button>
+            {checker.data && checkedPolicy === codePolicy && checker.state === "idle" ? (
+              <p role={checker.data.ok ? "status" : "alert"}>
+                {checker.data.ok ? checker.data.message : checker.data.errors.form}
+              </p>
+            ) : null}
           </div>
         </TabsPanel>
       </Tabs>

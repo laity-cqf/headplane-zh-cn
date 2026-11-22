@@ -3,16 +3,19 @@ import { NavLink, Outlet } from "react-router";
 import PageHeader from "~/components/page-header";
 import { useI18n } from "~/i18n/provider";
 import { authContext, headscaleConfigContext } from "~/server/context";
+import { Capabilities } from "~/server/web/roles";
 import cn from "~/utils/cn";
 
 import type { Route } from "./+types/layout";
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-  await context.get(authContext).require(request);
+  const auth = context.get(authContext);
+  const principal = await auth.require(request);
   const headscaleConfig = context.get(headscaleConfigContext);
 
   return {
     hasRestrictions: headscaleConfig.writable() && headscaleConfig.hasOIDCConfig(),
+    canConfigure: auth.can(principal, Capabilities.configure_iam),
   };
 }
 
@@ -20,6 +23,12 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
   const { t } = useI18n();
   const items = [
     { to: "/settings/auth-keys", label: t("authKeys.title") },
+    ...(loaderData.canConfigure
+      ? [
+          { to: "/settings/headscale", label: t("control.title") },
+          { to: "/settings/auth-requests", label: t("control.auth.title") },
+        ]
+      : []),
     ...(loaderData.hasRestrictions
       ? [{ to: "/settings/restrictions", label: t("restrictions.title") }]
       : []),

@@ -2,12 +2,14 @@ import acls from "./en/acls";
 import dns from "./en/dns";
 import editor from "./en/editor";
 import errors from "./en/errors";
+import headscale29 from "./en/headscale29";
 import machines from "./en/machines";
 import settings from "./en/settings";
 import ssh from "./en/ssh";
 import users from "./en/users";
 
 export default {
+  ...headscale29,
   ...acls,
   ...dns,
   ...editor,

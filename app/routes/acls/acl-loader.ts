@@ -31,6 +31,8 @@ export async function aclLoader({ request, context }: Route.LoaderArgs) {
     access: auth.can(principal, Capabilities.write_policy),
     writable: false,
     canEditGrants: context.get(headscaleContext).capabilities.policySupportsGrants,
+    canCheckPolicy: context.get(headscaleContext).capabilities.policyCanBeChecked,
+    canEditSshEnvironment: context.get(headscaleContext).capabilities.sshAcceptEnvWorks,
     policy: "",
     canReadRoutes: auth.can(principal, Capabilities.read_machines),
     routesLoaded: false,
