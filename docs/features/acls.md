@@ -80,9 +80,7 @@ traffic with `via`, ensure both gateways have a permitted tag; otherwise
 that Grant can exclude the backup. The primary marker is the global
 Headscale selection, not proof of the path used by every client.
 
-These additions are maintenance-source changes. The immutable
-`v0.8.2-zh` release and `v0.8.2` image retain their published contents;
-formal images include corrections with the next upstream release.
+Community maintenance release `v0.8.3-zh` and image `v0.8.3` include these additions, based on upstream 0.8.2. JSON/HuJSON policies may contain `acls`, `grants`, or both; multiple sources, destinations and protocol/port entries are displayed and preserved. The `v0.8.2` image keeps its original contents. Check GitHub Releases for publication status.
 
 ## Tags and groups
 

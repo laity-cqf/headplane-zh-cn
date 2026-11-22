@@ -74,10 +74,13 @@ Preserve LICENSE, upstream attribution and the non-official notice.
   English and Chinese together, then update only the selected i18n fingerprints.
 - Record upstream version/commit and acceptance status in
   .github/fork-release.json. Upgrades reset acceptance until CI has passed.
-- Formal community tags use vX.Y.Z-zh, with one release per upstream version and
-  no community revision suffix. Keep package.json at the upstream version. main
-  must remain channel=development and cannot publish. Corrections after publication
-  stay on the maintenance branches until the next upstream release.
+- Formal community tags use vX.Y.Z-zh, without a revision suffix. By default
+  the version follows upstream. An explicitly requested community maintenance
+  release records communityRelease.version, the pinned upstreamCommit and bilingual
+  notes in .github/fork-release.json. Keep package.json at the actual upstream
+  version. main must remain channel=development and cannot publish. Clear or
+  deliberately update communityRelease when upgrading upstream; use an unused
+  release version and never overwrite a published version.
 - Do not use pnpm release cut in this fork. From a clean, accepted stable checkout,
   use node .github/scripts/fork-release.cjs tag and push only that new tag.
 - Publishing requires successful Build (including containers), Translations and Docs push

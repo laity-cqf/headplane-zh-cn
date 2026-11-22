@@ -7,5 +7,13 @@
     "version": "0.8.2",
     "commit": "05e3ee33f6d3b347013654c69186791347be8bd9"
   },
+  "communityRelease": {
+    "version": "0.8.3",
+    "upstreamCommit": "05e3ee33f6d3b347013654c69186791347be8bd9",
+    "notes": {
+      "en": "Display and edit JSON/HuJSON policies using ACL rules (acls), Grants (grants), or both, including multiple sources, destinations and protocol/port lists. Grants require Headscale 0.29 or later. Includes the subnet gateway list and Headscale-reported primary status, with English and Simplified Chinese support.",
+      "zh-CN": "兼容 JSON/HuJSON 策略中的 ACL（acls）、Grants（grants）及两者混合写法，支持多来源、多目标、协议与端口列表的展示和编辑。Grants 需要 Headscale 0.29 或更高版本。同时包含子网网关列表与 Headscale 返回的当前主用状态，支持英文和简体中文。"
+    }
+  },
   "publicationReady": true
 }

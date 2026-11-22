@@ -6,6 +6,8 @@
 
 ## Changes
 
+- Community maintenance version 0.8.3 packages the JSON/HuJSON ACL and Grants editors and subnet gateway list, based on upstream 0.8.2. The source and release manifest retain the actual upstream version; full image tags remain immutable.
+
 - Access Control now lists subnet gateways and Headscale's reported primary by prefix, and supports Grants, optional via tags and automatic route approvers in English and Simplified Chinese. Editing preserves explicit empty access rules and application capabilities; older Headscale versions reject unsupported Grants before saving.
 
 - Community automation is consolidated into five workflows. Docker releases use short `vX.Y.Z` tags and publish only the final amd64/arm64 image. Release titles show only the tag; source uses GitHub’s built-in archives, while bilingual docs, image digests and checksums remain attached.
