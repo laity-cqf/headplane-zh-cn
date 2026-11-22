@@ -31,12 +31,20 @@ also requires the `write_policy` capability, which the `owner`, `admin` and
 
 ## Rules
 
-The **Rules** tab renders the policy as three lists:
+The **Rules** tab renders the policy as five lists:
 
 - **Access rules** — the `acls` section. Each rule allows traffic from a set of
   sources to a set of destinations. Destinations include a port range, for
   example `tag:web:80,443`. A destination entered without one gets `:*`
   appended, since Headscale rejects a destination that has no port.
+- **Grants** — the `grants` section. Destinations have no port; ports and
+  protocols go in a separate field such as `tcp:443`. Optional `via` tags
+  restrict which subnet routers or exit nodes handle the traffic. The list
+  requires Headscale 0.29 or later; saving Grants on older versions is rejected.
+  Application capabilities (`app`) are preserved and edited in the file.
+- **Auto approvers** — the `autoApprovers` section. Approve routes or exit
+  nodes advertised by specific users, groups or tags automatically. Approval
+  does not grant clients access; use access rules or Grants for that.
 - **SSH rules** — the `ssh` section, including `check` mode and its check
   period.
 - **Hosts** — the `hosts` section, which names an IP address or CIDR range so
@@ -46,6 +54,35 @@ Adding or editing an entry opens a dialog where sources and destinations are
 built from chips. Every group, tag, host and Headscale user already known to
 your tailnet is offered as a one-click suggestion, so rules can be written
 without memorising the syntax.
+
+## Subnet routes and automatic failover
+
+Open **Subnet routes** to see gateways grouped by subnet, with their online,
+advertisement and approval states. **Current primary** comes from Headscale's
+reported primary routes. **Manage gateway** opens machine details to approve
+or revoke routes using the existing permissions. Refresh fetches a new snapshot;
+this page does not measure traffic or LAN health.
+
+For automatic failover, advertise and approve the identical prefix on two or
+more gateways that can reach the same LAN. For example, advertise
+`10.0.0.0/16` on both `router-a` and `router-b`, approve it on both, and
+keep the clients' subnet-route acceptance enabled. Headscale selects the
+primary and handles failover. There is no fixed priority or load-balancing
+control in this panel. Existing connections may need to reconnect after a switch.
+
+The candidate count includes gateways that both advertise and have approval
+for the prefix, including offline candidates. An online node may still have a
+broken LAN connection. Test failover by taking one gateway offline and checking
+access to the same internal service through the other; return it afterward.
+
+Leave **Via** empty for ordinary failover. If an existing Grant restricts
+traffic with `via`, ensure both gateways have a permitted tag; otherwise
+that Grant can exclude the backup. The primary marker is the global
+Headscale selection, not proof of the path used by every client.
+
+These additions are maintenance-source changes. The immutable
+`v0.8.2-zh` release and `v0.8.2` image retain their published contents;
+formal images include corrections with the next upstream release.
 
 ## Tags and groups
 
@@ -82,7 +119,7 @@ and Tags & Groups tabs show a notice when the loaded policy contains comments �
 use the file editor if you want to keep them.
 :::
 
-Unknown top-level keys such as `autoApprovers` and `nodeAttrs` are preserved
+Unknown top-level keys such as `nodeAttrs` and `tests` are preserved
 untouched, so using the visual editor never silently drops parts of a policy
 that Headplane does not model.
 
@@ -102,8 +139,7 @@ visible alongside the localized explanation. A failed save does not replace the
 saved policy.
 
 **Preview rules** is an upstream placeholder and does not simulate network
-access. This release line has no separate Grants or auto-approver visual editor;
-use **Edit file** for sections that have no form. Acceptance is determined by
+access. Use **Edit file** for sections that have no form. Acceptance is determined by
 the deployed Headscale version, not by switching the interface language. The
 existing release-line integration matrix remains 0.27.0, 0.27.1, 0.28.0, 0.29.0
 and 0.29.1; localization does not extend those versions' policy syntax.

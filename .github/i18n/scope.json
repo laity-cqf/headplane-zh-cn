@@ -125,7 +125,11 @@
     "app/i18n/agent.ts",
     "docs/.vitepress/config.ts",
     "docs/.vitepress/theme/index.ts",
-    "docs/.vitepress/theme-labels.ts"
+    "docs/.vitepress/theme-labels.ts",
+    "app/routes/acls/components/subnet-routes.tsx",
+    "app/routes/acls/dialogs/auto-approver.tsx",
+    "app/routes/acls/dialogs/editor-dialog.tsx",
+    "app/routes/acls/dialogs/grant.tsx"
   ],
   "documents": [
     {

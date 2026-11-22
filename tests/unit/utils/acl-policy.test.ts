@@ -55,6 +55,8 @@ describe("parsePolicy", () => {
       hosts: {},
       acls: [],
       ssh: [],
+      grants: [],
+      autoApprovers: { routes: {}, exitNode: [], extra: {} },
       extra: {},
       keyOrder: [],
     });
@@ -126,10 +128,8 @@ describe("parsePolicy", () => {
   });
 
   test("keeps unknown top-level keys in extra", () => {
-    const { policy } = parseOrThrow(POLICY);
-    expect(policy.extra).toEqual({
-      autoApprovers: { routes: { "10.0.0.0/8": ["group:ops"] } },
-    });
+    const { policy } = parseOrThrow('{"nodeAttrs":[{"target":["*"],"attr":["example"]}]}');
+    expect(policy.extra).toEqual({ nodeAttrs: [{ target: ["*"], attr: ["example"] }] });
   });
 
   test("reports invalid JSON instead of throwing", () => {
@@ -187,8 +187,8 @@ describe("serializePolicy", () => {
   });
 
   test("writes unknown keys back out", () => {
-    const { policy } = parseOrThrow(POLICY);
-    expect(serializePolicy(policy)).toContain(`"autoApprovers"`);
+    const { policy } = parseOrThrow('{"nodeAttrs":[{"target":["*"],"attr":["example"]}]}');
+    expect(JSON.parse(serializePolicy(policy))).toEqual(policy.extra);
   });
 
   test("keeps the original top-level section order", () => {

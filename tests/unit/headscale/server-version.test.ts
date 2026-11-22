@@ -91,7 +91,7 @@ describe("formatServerVersion", () => {
 });
 
 describe("capabilitiesFor", () => {
-  test("0.28.0 enables every modern flag", () => {
+  test("0.28.0 enables flat tags and immutable owners but not grants", () => {
     const caps = capabilitiesFor(parseServerVersion("0.28.0"));
     expect(caps).toEqual({
       preAuthKeysHaveStableIds: true,
@@ -99,6 +99,7 @@ describe("capabilitiesFor", () => {
       nodeOwnerIsImmutable: true,
       registerKeyIncludesAuthReqPrefix: false,
       keyExpiryCanBeDisabled: false,
+      policySupportsGrants: false,
     });
   });
 
@@ -111,6 +112,7 @@ describe("capabilitiesFor", () => {
   test("0.29.0 enables the prefixed AuthID register key", () => {
     const caps = capabilitiesFor(parseServerVersion("0.29.0"));
     expect(caps.registerKeyIncludesAuthReqPrefix).toBe(true);
+    expect(caps.policySupportsGrants).toBe(true);
   });
 
   test("0.27.1 lacks every 0.28-gated capability", () => {

@@ -333,6 +333,31 @@
       "file": "docs/.vitepress/config.ts",
       "text": "'基于 <a href=\"https://github.com/tale/headplane\">tale/headplane</a> 的非官方社区维护版，保留 MIT 许可证。'",
       "reason": "zh-CN locale 的中文来源说明，保留 HTML 链接及原项目名称。"
+    },
+    {
+      "file": "app/routes/acls/dialogs/auto-approver.tsx",
+      "text": "placeholder=\"tag:router\"",
+      "reason": "配置键、协议名称或可直接执行的技术示例，保留原文。"
+    },
+    {
+      "file": "app/routes/acls/dialogs/grant.tsx",
+      "text": "placeholder=\"group:eng\"",
+      "reason": "配置键、协议名称或可直接执行的技术示例，保留原文。"
+    },
+    {
+      "file": "app/routes/acls/dialogs/grant.tsx",
+      "text": "placeholder=\"tag:router\"",
+      "reason": "配置键、协议名称或可直接执行的技术示例，保留原文。"
+    },
+    {
+      "file": "app/routes/acls/dialogs/grant.tsx",
+      "text": "placeholder=\"tag:web\"",
+      "reason": "配置键、协议名称或可直接执行的技术示例，保留原文。"
+    },
+    {
+      "file": "app/routes/acls/dialogs/grant.tsx",
+      "text": "placeholder=\"tcp:443\"",
+      "reason": "配置键、协议名称或可直接执行的技术示例，保留原文。"
     }
   ]
 }
