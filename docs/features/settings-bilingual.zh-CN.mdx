@@ -9,7 +9,7 @@ import { versions } from "@/lib/versions";
 
 # 设置操作指南
 
-本页介绍 `laity-cqf/headplane-zh-cn` 的 `main` 分支。开发分支不发布 Docker 镜像；部署使用稳定版 `v0.8.2-zh` 及镜像标签 `v0.8.2`。发行说明见[语言与维护说明](/features/language)。
+本页介绍 `laity-cqf/headplane-zh-cn` 的 `main` 分支。开发分支不发布 Docker 镜像；部署使用已正式发布的稳定社区版本。发行说明见[语言与维护说明](/features/language)。
 
 <span id="简体中文" />
 <span id="english" />
@@ -21,7 +21,7 @@ import { versions } from "@/lib/versions";
 在顶部选择 **简体中文**，打开 **设置 → 认证密钥**。
 认证密钥用于让设备接入 Tailnet，无需交互式登录；它与用于访问 Headscale API 的 API 密钥不同。
 所有者、管理员、网络管理员和 IT 管理员可管理密钥；审计员和查看者只能管理已关联的本人 Headscale 用户的密钥。
-成员无权访问此页面。账号尚未关联时，创建弹窗会说明原因并禁用提交，需先完成[账号关联](/features/users-bilingual)。
+成员无权访问此页面。账号尚未关联时，创建弹窗会说明原因并禁用提交，需先完成[账号关联](/features/users-roles)。
 
 1. 点击 **创建密钥**。
 2. 选择设备所属的 **用户**。具备管理权限时，可启用 **仅标签密钥**，改为至少添加一个标签。

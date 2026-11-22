@@ -9,3 +9,5 @@
 .dockerignore
 .env
 Dockerfile
+/ydzw
+/session

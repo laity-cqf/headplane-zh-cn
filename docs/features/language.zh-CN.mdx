@@ -15,7 +15,7 @@ description: 选择显示语言并维护双语版本。
 
 首次访问按 `Accept-Language` 选择英文或简体中文。中文语言变体统一使用简体中文，其他不支持的语言回退到英文。清除 `headplane_locale` 后恢复跟随浏览器语言。
 
-登录、公共导航、设备、用户、访问控制、DNS、设置和浏览器 SSH 均已支持两种语言，包括表单、校验、操作结果、连接提示、公共错误、日期和相对时间。用法见[设备](/features/machines-bilingual)、[用户](/features/users-bilingual)、[访问控制](/features/acls-bilingual)、[DNS](/features/dns-bilingual)、[设置](/features/settings-bilingual)和[浏览器 SSH](/features/ssh-bilingual)操作指南。
+登录、公共导航、设备、用户、访问控制、DNS、设置和浏览器 SSH 均已支持两种语言，包括表单、校验、操作结果、连接提示、公共错误、日期和相对时间。用法见[设备](/features/machines-bilingual)、[用户](/features/users-roles)、[访问控制](/features/acls)、[DNS](/features/dns-bilingual)、[设置](/features/settings-bilingual)和[浏览器 SSH](/features/ssh)操作指南。
 
 配置键、API 字段、命令、产品名称、用户输入值、远端终端输出和原始诊断保留原文。中文错误会附带解释及原始诊断详情。切换语言不会改变时区，也不会重建 SSH 会话。
 
@@ -58,9 +58,9 @@ pnpm i18n:check
 
 技术名称和示例在 `.github/i18n/exceptions.json` 中记录，必须有确切消息键，或确切文件与代码文本，并说明理由。失效例外会导致检查失败。新增例外需逐项审阅，不用宽泛排除或未经核对的全量刷新绕过失败。
 
-静态检查不能证明翻译质量，也无法追踪全部动态字符串、第三方组件或远端终端消息。仍需人工检查源码差异和两种语言的操作流程；原始服务端诊断继续保留，并附中文解释。检查范围见 `.github/I18N_AUDIT.zh-CN.md`。
+静态检查不能证明翻译质量，也无法追踪全部动态字符串、第三方组件或远端终端消息。仍需人工检查源码差异和两种语言的操作流程；原始服务端诊断继续保留，并附中文解释。检查范围见 `session/MAINTENANCE.zh-CN.md 第 8 节`。
 
-上游更新会创建同步 PR 和跟踪 Issue，列出翻译工作及上述复核命令。提醒不会自动完成翻译，本身也不阻止合并；需要强制门禁时，在 GitHub 分支保护中配置必需状态检查。容器 CI 已通过，stable 的翻译及容器验收已通过，正式发布结果以 GitHub Releases 为准。双语文档通过源码阅读、`pnpm docs:dev` 本地预览，或从 GitHub Releases 下载对应版本快照；不部署托管文档站，也不需要托管凭据。仓库内 `.github/FORK_SETUP.zh-CN.md` 说明了发布配置。
+上游更新会创建同步 PR 和跟踪 Issue，列出翻译工作及上述复核命令。提醒不会自动完成翻译，本身也不阻止合并；需要强制门禁时，在 GitHub 分支保护中配置必需状态检查。容器 CI 已通过，stable 的翻译及容器验收已通过，正式发布结果以 GitHub Releases 为准。双语文档通过源码阅读、`pnpm docs:dev` 本地预览，或从 GitHub Releases 下载对应版本快照；不部署托管文档站，也不需要托管凭据。仓库内 `session/MAINTENANCE.zh-CN.md` 说明了发布配置。
 
 ## 固定维护分支与历史发行
 
@@ -68,6 +68,6 @@ pnpm i18n:check
 
 社区版本标签例如 `v0.8.2-zh`。每个已发布版本都在 GitHub Releases 保留源码、双语文档快照、正式多架构镜像的摘要和校验和。Docker 完整镜像标签使用 `vX.Y.Z`，例如 `v0.8.2`；GitHub Release/Git 标签保留 `-zh`。完整镜像标签不重复使用；`latest`、`0.8` 可以前移。后续仅发布普通正式镜像，保留 amd64/arm64。源码使用 GitHub 自带 ZIP/tar.gz，后续发行不再附加重复的源码包。默认沿用上游版本，不添加修订号。明确要求提前交付维护修正时，可在 `.github/fork-release.json` 单独记录社区补丁版本，绑定真实上游提交并附双语发行说明。社区 0.8.3 基于上游 0.8.2，增加 JSON/HuJSON 的 ACL、Grants 兼容。下次升级上游时清除或重新绑定此覆盖记录；若标签已占用，选择下一个未使用的社区版本。旧镜像、标签和附件保持原样。临时 PR 分支合并后自动删除。
 
-本项目是非官方社区维护版本，完整保留上游 MIT 许可证及来源说明。验收门禁和操作步骤见仓库内的 `.github/FORK_SETUP.zh-CN.md`。
+本项目是非官方社区维护版本，完整保留上游 MIT 许可证及来源说明。验收门禁和操作步骤见仓库内的 `session/MAINTENANCE.zh-CN.md`。
 
 工作流保留 5 个：**Build**（编译、单元/集成测试、Nix 和容器运行验收）、**Translations**、**Docs**（根路径/归档预览）、**Upstream sync** 和 **Release**。Release 同时负责上传恢复及匿名镜像检查。现有不可变发行及历史调试镜像继续保留。

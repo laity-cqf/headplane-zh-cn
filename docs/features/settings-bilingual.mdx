@@ -9,7 +9,7 @@ import { versions } from "@/lib/versions";
 
 # Settings guide
 
-This guide describes `laity-cqf/headplane-zh-cn` on `main`. The development branch does not publish Docker images; use stable release `v0.8.2-zh` with image tag `v0.8.2` for deployment. See [Language and maintenance](/features/language) for release status.
+This guide describes `laity-cqf/headplane-zh-cn` on `main`. The development branch does not publish Docker images; deploy a published stable community release. See [Language and maintenance](/features/language) for release status.
 
 <span id="english" />
 <span id="简体中文" />
@@ -22,7 +22,7 @@ Open **Settings → Auth keys**. These keys register machines without interactiv
 sign-in; they are different from Headscale API keys. Owners, admins, network
 admins and IT admins manage keys. Auditors and viewers manage only keys for
 their linked Headscale user. Members cannot open this page. Link an account
-before creating self-service keys; see [Users](/features/users-bilingual).
+before creating self-service keys; see [Users](/features/users-roles).
 
 Use **Create key**, choose a user, or enable **Tag-only key** and add at least
 one tag with management privileges. The `tag:` prefix is filled in automatically.

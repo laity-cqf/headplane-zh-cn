@@ -166,3 +166,21 @@ so this starts with Headscale 0.29.
 
 Either the `ssh` rules in the ACL policy don't let this person log in as the
 chosen user, or that Linux user doesn't exist on the machine.
+
+## Session keys and language
+
+Both the network policy and its `ssh` rules must allow the requested access.
+Enter a target operating-system username, not a Headscale account name, and follow
+the sign-in link when SSH check requires reauthentication. Exit the shell and close
+the window when finished.
+
+Each connection uses a single-use ephemeral registration key for the linked
+Headscale user, expiring after ten minutes. This limits joining the tailnet; it is
+not a ten-minute SSH session timeout. The Agent removes the offline browser node.
+
+The username form, status, sign-in notices and error explanations support English
+and Chinese. Switching language does not issue another key, revalidate the SSH loader
+or recreate the terminal. Machine names, usernames, commands and remote terminal
+output retain their spelling. Known errors keep their original diagnostic alongside
+a translated explanation. Application documentation buttons retain upstream links;
+community docs are source, local previews and Release snapshots, not a hosted site.

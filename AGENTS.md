@@ -1,9 +1,11 @@
 # Headplane
 
-For a new community maintenance session, read `MAINTENANCE.zh-CN.md` (or
-`MAINTENANCE.md`) and `.github/FORK_SETUP.zh-CN.md` before changing code or
-publishing. Recheck live repository and release state, preserve existing user
-changes, and update both handoff manuals when maintenance decisions change.
+For community maintenance, read `session/README.md` and the newest entries in
+`session/HISTORY.md` first. Read only relevant sections of
+`session/MAINTENANCE.zh-CN.md` (or its English version) and affected code.
+Preserve existing user changes. Update session status/history after every task
+and both manuals when lasting rules change; do not rescan the whole repository
+when the task index already identifies the relevant files.
 
 Headplane is a web UI for Headscale, the self-hosted Tailscale control server.
 Three rules guide every change:
@@ -223,4 +225,4 @@ Keep exactly five workflows: Build, Translations, Docs, Upstream sync and Releas
 Release includes recovery and anonymous pull verification. Do not add duplicate
 source.tar.gz attachments; preserve existing immutable release assets.
 
-See .github/FORK_SETUP.zh-CN.md for the operational checklist and credentials.
+See session/MAINTENANCE.zh-CN.md for the operational checklist and credentials.

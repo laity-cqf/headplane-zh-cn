@@ -1,8 +1,8 @@
 # Headplane zh-CN (unofficial fork)
 
-[Maintenance and session handoff](./MAINTENANCE.md) · [中文维护与会话交接](./MAINTENANCE.zh-CN.md)
+[Session entry and maintenance history](./session/README.md)
 
-[简体中文](./README.zh-CN.md) · [Bilingual fork setup](./.github/FORK_SETUP.zh-CN.md)
+[简体中文](./README.zh-CN.md) · [Bilingual fork setup](./session/MAINTENANCE.md)
 
 This is `laity-cqf/headplane-zh-cn`, a community-maintained English and
 Simplified Chinese fork of [tale/headplane](https://github.com/tale/headplane).
@@ -14,7 +14,7 @@ Release snapshots, with local previews and no hosted documentation deployment.
 
 Maintenance uses fixed `main` (development) and `stable` (latest stable upstream) branches.
 Community tags such as `v0.8.2-zh` preserve source, documentation and image digests;
-new upstream versions do not require new maintenance branches. See the [fork release guide](./.github/FORK_SETUP.zh-CN.md).
+new upstream versions do not require new maintenance branches. See the [fork release guide](./session/MAINTENANCE.md).
 
 > A feature-complete web UI for [Headscale](https://headscale.net)
 

@@ -106,3 +106,37 @@ the **Users** page.
 Other roles can't pick a user for themselves, because a link grants access to
 that user's machines and auth keys. Until someone links them, their home page
 asks them to contact an administrator.
+
+## Manage Headscale users
+
+The Users page also shows unlinked Headscale users. Local accounts remain visible
+when Headscale is unavailable; notices distinguish missing remote data from an
+empty list. Group editing is unavailable while the policy cannot be read.
+
+Select **Add user**, enter a username and optional display name/email, and submit.
+Names have at least two characters, start with a Unicode letter, and contain letters,
+decimal digits, dots, hyphens or underscores, with at most one non-trailing `@`.
+New users appear in the unlinked list. OIDC-managed users cannot be renamed, and
+renaming does not rewrite policy references.
+
+Remove owned machines before deleting a user; ownership reassignment is unavailable
+on Headscale 0.28+. Deletion cannot be undone. Deleting a Headscale user unlinks its
+Headplane account without deleting the login account, and a later OIDC sign-in may
+recreate the server-side user. The current account's own row does not offer deletion
+of its linked user.
+
+Only the current owner can transfer ownership; the previous owner becomes an admin.
+An API-key session cannot act as an account owner to transfer it.
+
+## Groups and member onboarding
+
+**Edit groups** requires both user/policy write permissions and a readable database
+policy. Select existing groups or enter valid `group:...` names. Saving preserves
+other members and fields but rewrites policy text and removes comments, with a
+warning. File-mode policies remain read-only.
+
+Members see **Connect your devices**, platform downloads, a Linux installation
+script and the network's `tailscale up --login-server=...` command. The page explains
+whether the account is linked, waiting for its first SSO device, or needs an admin.
+These steps do not grant dashboard access. Language selection preserves form drafts,
+permissions, role identifiers, commands and original diagnostics.

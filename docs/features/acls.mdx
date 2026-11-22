@@ -47,8 +47,9 @@ The **Rules** tab renders the policy as five lists:
   ports and protocols go in their own field, for example `tcp:443`, and
   destinations have no port. **Via** routes the traffic through subnet routers
   or exit nodes with the given tags. To route through an exit node, use
-  `autogroup:internet` as the destination. App capabilities (`app`) are kept
-  but can only be edited in the file. Grants need Headscale
+  `autogroup:internet` as the destination. Edit application capabilities (`app`) as JSON in the Grant dialog,
+  with Taildrive read-only and Peer Relay presets. New Grants have no IP permissions
+  until protocols and ports are explicitly selected. Grants need Headscale
   {versions.headscale.grants} or newer, and the list is hidden on older
   versions.
 - **SSH rules**: the `ssh` section, including `check` mode and its check
@@ -134,3 +135,20 @@ Unknown top-level keys and rule fields are kept as they are. Configure node
 attributes and network/SSH tests in **Headscale 0.29 features**, and use
 **Preview rules** for server-side validation without saving. See
 [Headscale 0.29 web management](/features/headscale-029) for all controls.
+
+## Drafts, language and validation
+
+Dialogs, the file editor and preview share the same local draft. Switching language
+preserves it. **Discard changes** restores the loaded policy. Unknown rule actions
+remain unchanged instead of becoming `accept`; load failures never become an empty
+editable policy. Saving still requires server-side permission and database mode.
+
+Group and tag names use `group:` and `tag:`, followed by lowercase letters, digits
+or hyphens; duplicates are rejected. Review references after renaming or deleting
+an entry. User references retain the `username@` form.
+
+Editor search, replace, formatting, locations and diagnostics follow the selected
+language. Failed Headscale checks retain original diagnostics and HTTP status with
+a localized explanation. **Preview rules** validates drafts against the real server
+without saving; it does not simulate LAN reachability. See
+[Headscale 0.29 web management](/features/headscale-029).

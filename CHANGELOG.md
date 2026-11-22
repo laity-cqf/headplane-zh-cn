@@ -12,6 +12,8 @@
 
 ## Changes
 
+- Maintenance now starts from session/ with a task index and ongoing history. Duplicate guides and stale progress reports have been consolidated, and private deployment files are excluded from Git and Docker builds.
+
 - A bilingual maintenance and session handoff manual now records the released source, branch differences, upgrade and translation steps, build acceptance, publication gates and recovery procedures.
 
 - Headscale 0.29 web controls now cover node capabilities, randomized ports, application grants, network/SSH tests, authentication decisions and server lifecycle/HA/client defaults, with English and Chinese forms and validation without saving. SSH environment forwarding requires 0.29.7. Stable community maintenance release 0.8.4 packages these additions on upstream 0.8.2; image v0.8.3 is unchanged.

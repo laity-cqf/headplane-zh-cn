@@ -9,10 +9,7 @@
     "ssh",
     "language",
     "machines-bilingual",
-    "users-bilingual",
-    "acls-bilingual",
     "dns-bilingual",
-    "settings-bilingual",
-    "ssh-bilingual"
+    "settings-bilingual"
   ]
 }
